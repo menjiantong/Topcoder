@@ -27,44 +27,48 @@ typedef vector<string> VS;
 #define fr(i,s,n)    for(int i=s;i<(n);++i)
 #define MOD 1000000007
 
-int f(int n,int x,int y)
+vector<pp>a;
+
+int f(double dis)
 {
-    return (n>=x && n<=y);
+    for(int i=0;i<a.size();++i)
+    {
+        int tmp=a[i].f/dis;
+        int tmp1=a[i].sc/dis;
+
+
+        if(tmp==tmp1)return 0;
+    }
+
+    return 1;
 }
 
-class TaroFriends {
+class TheFrog {
     public:
-    int getNumber(vector<int> c, int X) {
-    sort(all(c));
-    int ans=1e9;
-    VI a;
+    double getMinimum(int D, vector<int> L, vector<int> R) {
 
-    for(int i=0;i<c.size();++i)
+    for(int i=0;i<L.size();++i)
     {
-        a.pb(c[i]+X);
-        a.pb(c[i]-X);
+        a.pb(pp(L[i],R[i]));
     }
 
     sort(all(a));
 
-    for(int i=0;i<a.size();++i)
+    double s=EPS,e=D+EPS;
+
+    while((e-s)>=EPS)
     {
-        for(int j=i;j<a.size();++j)
-        {
-            bool ok=true;
-            for(int k=0;k<c.size();++k)
-            {
-                ok=ok&&(f(c[k]+X,a[i],a[j]) || f(c[k]-X,a[i],a[j]));
-            }
-            if(ok)ans=min(ans,a[j]-a[i]);
-        }
+        double mid=(s+e)/2;
+        if(f(mid))e=mid;
+        else s=mid;
     }
-        return ans;
+
+    return s;
     }
 };
 
 // CUT begin
-ifstream data("TaroFriends.sample");
+ifstream data("TheFrog.sample");
 
 string next_line() {
     string s;
@@ -103,14 +107,16 @@ string to_string(string t) {
     return "\"" + t + "\"";
 }
 
-bool do_test(vector<int> coordinates, int X, int __expected) {
+bool double_equal(const double &a, const double &b) { return b==b && a==a && fabs(b - a) <= 1e-9 * max(1.0, fabs(a) ); }
+
+bool do_test(int D, vector<int> L, vector<int> R, double __expected) {
     time_t startClock = clock();
-    TaroFriends *instance = new TaroFriends();
-    int __result = instance->getNumber(coordinates, X);
+    TheFrog *instance = new TheFrog();
+    double __result = instance->getMinimum(D, L, R);
     double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
-    if (__result == __expected) {
+    if (double_equal(__expected, __result)) {
         cout << "PASSED!" << " (" << elapsed << " seconds)" << endl;
         return true;
     }
@@ -127,12 +133,14 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     while (true) {
         if (next_line().find("--") != 0)
             break;
-        vector<int> coordinates;
-        from_stream(coordinates);
-        int X;
-        from_stream(X);
+        int D;
+        from_stream(D);
+        vector<int> L;
+        from_stream(L);
+        vector<int> R;
+        from_stream(R);
         next_line();
-        int __answer;
+        double __answer;
         from_stream(__answer);
 
         cases++;
@@ -140,16 +148,16 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(coordinates, X, __answer)) {
+        if ( do_test(D, L, R, __answer)) {
             passed++;
         }
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1395495949;
+        int T = time(NULL) - 1395497044;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
-        cout << "Score  : " << 250 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
+        cout << "Score  : " << 500 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
     }
     return 0;
 }
@@ -167,7 +175,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (mainProcess) {
-        cout << "TaroFriends (250 Points)" << endl << endl;
+        cout << "TheFrog (500 Points)" << endl << endl;
     }
     return run_test(mainProcess, cases, argv[0]);
 }

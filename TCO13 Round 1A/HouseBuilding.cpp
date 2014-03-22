@@ -27,44 +27,37 @@ typedef vector<string> VS;
 #define fr(i,s,n)    for(int i=s;i<(n);++i)
 #define MOD 1000000007
 
-int f(int n,int x,int y)
+int f(int a,int b,int c,int d)
 {
-    return (n>=x && n<=y);
+    return min(min(min(a,b),c),d);
 }
-
-class TaroFriends {
+class HouseBuilding {
     public:
-    int getNumber(vector<int> c, int X) {
-    sort(all(c));
-    int ans=1e9;
-    VI a;
+    int getMinimum(vector<string> a) {
 
-    for(int i=0;i<c.size();++i)
+    int ans=10000000;
+    for(int k=0;k<10;++k)
     {
-        a.pb(c[i]+X);
-        a.pb(c[i]-X);
-    }
-
-    sort(all(a));
-
-    for(int i=0;i<a.size();++i)
-    {
-        for(int j=i;j<a.size();++j)
+        int cnt=0;
+        for(int i=0;i<a.size();++i)
         {
-            bool ok=true;
-            for(int k=0;k<c.size();++k)
+            for(int j=0;j<a[0].length();++j)
             {
-                ok=ok&&(f(c[k]+X,a[i],a[j]) || f(c[k]-X,a[i],a[j]));
+                int tmp=a[i][j]-'0';
+                if(tmp==k || tmp==(k+1))continue;
+                if(tmp>k+1)cnt+=tmp-k-1;
+                else cnt+=k-tmp;
             }
-            if(ok)ans=min(ans,a[j]-a[i]);
         }
+        ans=min(ans,cnt);
     }
+
         return ans;
     }
 };
 
 // CUT begin
-ifstream data("TaroFriends.sample");
+ifstream data("HouseBuilding.sample");
 
 string next_line() {
     string s;
@@ -103,10 +96,10 @@ string to_string(string t) {
     return "\"" + t + "\"";
 }
 
-bool do_test(vector<int> coordinates, int X, int __expected) {
+bool do_test(vector<string> area, int __expected) {
     time_t startClock = clock();
-    TaroFriends *instance = new TaroFriends();
-    int __result = instance->getNumber(coordinates, X);
+    HouseBuilding *instance = new HouseBuilding();
+    int __result = instance->getMinimum(area);
     double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
@@ -127,10 +120,8 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     while (true) {
         if (next_line().find("--") != 0)
             break;
-        vector<int> coordinates;
-        from_stream(coordinates);
-        int X;
-        from_stream(X);
+        vector<string> area;
+        from_stream(area);
         next_line();
         int __answer;
         from_stream(__answer);
@@ -140,13 +131,13 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(coordinates, X, __answer)) {
+        if ( do_test(area, __answer)) {
             passed++;
         }
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1395495949;
+        int T = time(NULL) - 1395496332;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
         cout << "Score  : " << 250 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
@@ -167,7 +158,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (mainProcess) {
-        cout << "TaroFriends (250 Points)" << endl << endl;
+        cout << "HouseBuilding (250 Points)" << endl << endl;
     }
     return run_test(mainProcess, cases, argv[0]);
 }
