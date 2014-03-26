@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+
+	<style type="text/css">
+	    /* color scheme */
+	    
+            body { color: black; background-color: white; }
+            .section .section-title { color: grey; }
+            li.testcase div.testcase-no { border-color: #ddd; color: grey; }
+            li.testcase .tag { background: #545454; color: white; }
+            li.testcase .data { background: #eee; }
+        
+
+	    /* other style */
+	    body { font-family: Helvetica, Arial, Verdana, sans-serif; }
+		.heading { font-weight: bold; font-size: 28px; text-align: center; }
+		.section { padding-top: 10px; }
+	    .section .section-title { font-weight: bold; font-size: 20px; }
+        .problem-intro { padding-left: 20px; }
+        note, user-constraint { padding-left: 20px; }
+		type {
+			font-weight: bold;
+			font-family: monospace;
+		}
+		
+            img {
+                float: none;
+                display: block;
+                width: 200px;
+                height: auto;
+                margin: 10px;
+                border: 0px solid #ccc;
+            }
+        
+		ul {
+			list-style-type: none;
+			padding: 0px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		ul.constraints li:before {
+			content: "-";
+			font-size: 16px;
+			font-family: monospace;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+		ul.notes li:before {
+			content: "~";
+			font-size: 16px;
+			font-family: monospace;
+			font-weight: normal;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+
+		li.testcase {
+			display: flex;
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		li.testcase > .testcase-content > div { padding-bottom: 8px; }
+		li.testcase .tag {
+			font-family: Georgia;
+			font-size: 10px;
+			text-align: center;
+			border-radius: 5px;
+			padding: 2px;
+		}
+		li.testcase .data {
+			font-family: monospace;
+			padding: 5px;
+		}
+        li.testcase .testcase-comment {
+            margin: 0;
+            padding-left: 5px;
+        }
+        .testcase-comment p:first-child { margin-top: 0; }
+        .testcase-comment p:last-child { margin-bottom: 0; }
+
+		li.testcase {
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			overflow: auto;
+		}
+		li.testcase .testcase-no {
+		    float: left;
+		    clear: both;
+		}
+		li.testcase .testcase-content {
+		    clear: both;
+		    float: left;
+		    margin: 5px;
+		}
+		li.testcase .tag {
+		    float: left;
+		    clear: both;
+		    margin-bottom: 5px;
+		}
+
+		.testcase-content .testcase-input {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .variables {
+		    float: left;
+		}
+		.variables {
+		    margin-left: 0.5em;
+		}
+		.variable {
+		    float: left;
+		    clear: both;
+		}
+		.variable .name {
+		    clear: both;
+		    float : left;
+		    font-weight: bold;
+		}
+		.variable .name:after {
+		    font-weight: bold;
+		    content : ": ";
+		}
+		.variable .value {
+		    float: left;
+		    padding-left: 0.5em;
+		}
+		.variable .value:after {
+		    clear: both;
+		    display: block;
+		}
+		.testcase-content .testcase-output {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .data {
+		    float: left;
+		    margin-left: 0.5em;
+		}
+		.testcase-content .testcase-annotation {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .testcase-comment {
+		    float: left;
+		}
+		
+            li.testcase div.testcase-no {
+                min-width: 16px;
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                padding: 8px;
+                margin-right: 10px;
+                border-radius: 100%;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: top;
+                border-style: solid;
+                border-width: 2px;
+            }
+		
+	</style>
+
+    <title>Topcoder - TCO08 Round 2 - Problem 250</title>
+</head>
+
+<body>
+	<div class="heading">
+        TCO08 Round 2 Div 1 - Problem 250 <br/>
+        OneWayStreets
+    </div>
+
+	<hr/>
+
+    <!-- Problem Statemnt -->
+    <div class="section">
+        <div class="section-title">Problem Statement</div>
+        <div class="problem-intro">
+            <intro escaped="1"><p>
+The king of Absurdistan has become very angry, and thus he has decided to make an evil reform of the road network.
+</p>
+
+<p>
+Currently, the network contains several towns, connected by some one-way and some two-way streets. The king's goal is to change all two-way streets into one-way streets. That is, for each currently present two-way street the king will pick one of the two directions,
+and make the street one-way in the chosen direction.
+</p>
+
+<p>
+To make it even worse, the king has a simple goal he wants to achieve: After the reform the network must be so evil that once someone starts traveling along the roads, he will never be able to return back to the town where he started.
+</p>
+
+<p>
+You will be given the current map as a <type>String[]</type> <b>roads</b>. 
+</p>
+
+<p>
+More precisely, the towns are numbered from 0 to N-1 for some N.
+The j-th character of the i-th element of <b>roads</b> is '<tt>Y</tt>' if there is a direct road that allows us to travel from i to j, otherwise it will be '<tt>N</tt>'.
+Each pair of towns is connected by at most one direct road. If the input contains a '<tt>Y</tt>' both for a i-&gt;j road and for a j-&gt;i road, this means that the road between i and j is currently two-way.
+</p>
+
+<p>
+Write a method that will return
+either &quot;<tt>YES</tt>&quot; or &quot;<tt>NO</tt>&quot; (quotes for clarity), depending on whether the king can achieve his evil goal.
+</p></intro>
+        </div>
+    </div>
+
+    
+    <!-- Constraints -->
+    <div class="section">
+        <div class="section-title">Constraints</div>
+        <ul class="constraints">
+                    <li><user-constraint escaped="1"><b>roads</b> will contain N elements, where N is between 2 and 50, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1">Each element of <b>roads</b> will contain exactly N characters.</user-constraint></li>
+                    <li><user-constraint escaped="1">Each character in each element of <b>roads</b> will be either '<tt>Y</tt>' or '<tt>N</tt>'.</user-constraint></li>
+                    <li><user-constraint escaped="1">For each i the i-th character of the i-th element of <b>roads</b> will be '<tt>N</tt>'.</user-constraint></li>
+                </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <div class="section-title">Test cases</div>
+        <ul class="testcases">
+                        <li class="testcase">
+                <div class="testcase-no">0</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">roads</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;NYN&quot;, &quot;NNY&quot;, &quot;NNN&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            &quot;YES&quot;
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">This map contains two roads: 0-&gt;1 and 1-&gt;2. Both roads are already one-way, so the king can't change
+anything.
+However, the map already has the desired property.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">1</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">roads</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;NYN&quot;, &quot;YNY&quot;, &quot;NYN&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            &quot;YES&quot;
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">This map contains two roads: 0&lt;-&gt;1 and 1&lt;-&gt;2. Both roads are two-way. The king can change them to
+one-way streets 0-&gt;1 and 1-&gt;2, thus creating the situation from the previous example.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">2</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">roads</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;NYNN&quot;, &quot;NNYN&quot;, &quot;YNNY&quot;, &quot;NNYN&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            &quot;NO&quot;
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">Roads: 0-&gt;1, 1-&gt;2, 2-&gt;0, and 2&lt;-&gt;3.
+The king may change 2&lt;-&gt;3 either to 2-&gt;3, or to 3-&gt;2.
+Neither of these changes will help him, as people will still be able to leave town 0 and return back
+via the route 0-&gt;1-&gt;2-&gt;0.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">3</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">roads</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;NNN&quot;, &quot;NNN&quot;, &quot;NNN&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            &quot;YES&quot;
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">4</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">roads</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;NYYYY&quot;, &quot;YNYYY&quot;, &quot;YYNYY&quot;, &quot;YYYNY&quot;, &quot;YYYYN&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            &quot;YES&quot;
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                    </ul>
+    </div>
+
+    <hr>
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+
+	<style type="text/css">
+	    /* color scheme */
+	    
+            body { color: black; background-color: white; }
+            .section .section-title { color: grey; }
+            li.testcase div.testcase-no { border-color: #ddd; color: grey; }
+            li.testcase .tag { background: #545454; color: white; }
+            li.testcase .data { background: #eee; }
+        
+
+	    /* other style */
+	    body { font-family: Helvetica, Arial, Verdana, sans-serif; }
+		.heading { font-weight: bold; font-size: 28px; text-align: center; }
+		.section { padding-top: 10px; }
+	    .section .section-title { font-weight: bold; font-size: 20px; }
+        .problem-intro { padding-left: 20px; }
+        note, user-constraint { padding-left: 20px; }
+		type {
+			font-weight: bold;
+			font-family: monospace;
+		}
+		
+            img {
+                float: none;
+                display: block;
+                width: 200px;
+                height: auto;
+                margin: 10px;
+                border: 0px solid #ccc;
+            }
+        
+		ul {
+			list-style-type: none;
+			padding: 0px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		ul.constraints li:before {
+			content: "-";
+			font-size: 16px;
+			font-family: monospace;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+		ul.notes li:before {
+			content: "~";
+			font-size: 16px;
+			font-family: monospace;
+			font-weight: normal;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+
+		li.testcase {
+			display: flex;
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		li.testcase > .testcase-content > div { padding-bottom: 8px; }
+		li.testcase .tag {
+			font-family: Georgia;
+			font-size: 10px;
+			text-align: center;
+			border-radius: 5px;
+			padding: 2px;
+		}
+		li.testcase .data {
+			font-family: monospace;
+			padding: 5px;
+		}
+        li.testcase .testcase-comment {
+            margin: 0;
+            padding-left: 5px;
+        }
+        .testcase-comment p:first-child { margin-top: 0; }
+        .testcase-comment p:last-child { margin-bottom: 0; }
+
+		li.testcase {
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			overflow: auto;
+		}
+		li.testcase .testcase-no {
+		    float: left;
+		    clear: both;
+		}
+		li.testcase .testcase-content {
+		    clear: both;
+		    float: left;
+		    margin: 5px;
+		}
+		li.testcase .tag {
+		    float: left;
+		    clear: both;
+		    margin-bottom: 5px;
+		}
+
+		.testcase-content .testcase-input {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .variables {
+		    float: left;
+		}
+		.variables {
+		    margin-left: 0.5em;
+		}
+		.variable {
+		    float: left;
+		    clear: both;
+		}
+		.variable .name {
+		    clear: both;
+		    float : left;
+		    font-weight: bold;
+		}
+		.variable .name:after {
+		    font-weight: bold;
+		    content : ": ";
+		}
+		.variable .value {
+		    float: left;
+		    padding-left: 0.5em;
+		}
+		.variable .value:after {
+		    clear: both;
+		    display: block;
+		}
+		.testcase-content .testcase-output {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .data {
+		    float: left;
+		    margin-left: 0.5em;
+		}
+		.testcase-content .testcase-annotation {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .testcase-comment {
+		    float: left;
+		}
+		
+            li.testcase div.testcase-no {
+                min-width: 16px;
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                padding: 8px;
+                margin-right: 10px;
+                border-radius: 100%;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: top;
+                border-style: solid;
+                border-width: 2px;
+            }
+		
+	</style>
+
+    <title>Topcoder - SRM 464 - Problem 1000</title>
+</head>
+
+<body>
+	<div class="heading">
+        SRM 464 Div 2 - Problem 1000 <br/>
+        ColorfulMazeTwo
+    </div>
+
+	<hr/>
+
+    <!-- Problem Statemnt -->
+    <div class="section">
+        <div class="section-title">Problem Statement</div>
+        <div class="problem-intro">
+            <intro escaped="1">You have just entered the Colorful Maze. 
+You are given the layout of the maze in the <type>String[]</type> <b>maze</b>, 
+where the j-th character of the i-th element is the cell at row i, column j. 
+The following types of cells exist in the maze: 
+<ul>
+	<li>'#' - <i>Wall. </i> You cannot enter these cells. </li>
+	<li>'.' - <i>Empty cell. </i> You can walk freely into these cells. </li>
+	<li>'A'-'G' - <i>Empty cell with a colored floor. </i> Each of 'A'-'G' represents a different color. You can walk into these cells. </li>
+	<li>'$' - <i>Entrance. </i> This is the cell in which you start. </li>
+	<li>'!' - <i>Exit. </i> This is the cell you must reach to finish the maze. </li>
+</ul><br></br>
+Colored floors with certain colors are dangerous, but you don't know upfront which colors are dangerous. 
+You only know the probability of each color being dangerous. 
+You are given a <type>int[]</type> <b>trap</b>, where the first element is the percent probability of color 'A' being dangerous, 
+the second element is the percent probability of color 'B' being dangerous, and so on. 
+When you step into a cell with a dangerous color, you get damaged by a trap. <br></br>
+<br></br>
+When you're inside the maze, you can only move in the four cardinal directions. 
+You cannot move diagonally.
+Return the probability that you can finish the maze without getting damaged, assuming that you walk according to a strategy that maximizes this probability.
+See examples for further clarification.
+</intro>
+        </div>
+    </div>
+
+        <!-- Notes -->
+    <div class="section">
+        <div class="section-title">Notes</div>
+        <ul class="notes">
+                    <li><note escaped="1">The returned value must have an absolute or relative error less than 1e-9. </note></li>
+                </ul>
+    </div>
+    
+    <!-- Constraints -->
+    <div class="section">
+        <div class="section-title">Constraints</div>
+        <ul class="constraints">
+                    <li><user-constraint escaped="1"><b>maze</b> will contain between 1 and 50 elements, inclusive. </user-constraint></li>
+                    <li><user-constraint escaped="1">Each element of <b>maze</b> will contain between 1 and 50 characters, inclusive. </user-constraint></li>
+                    <li><user-constraint escaped="1">Each element of <b>maze</b> will contain the same number of characters. </user-constraint></li>
+                    <li><user-constraint escaped="1">Each character in <b>maze</b> will be one of '#', '.', 'A', 'B', 'C', 'D', 'E', 'F', 'G', '$', and '!'.</user-constraint></li>
+                    <li><user-constraint escaped="1"><b>maze</b> will contain exactly one '$' and exactly one '!'.</user-constraint></li>
+                    <li><user-constraint escaped="1"><b>trap</b> will contain exactly 7 elements. </user-constraint></li>
+                    <li><user-constraint escaped="1">Each element of <b>trap</b> will be between 0 and 100, inclusive. </user-constraint></li>
+                </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <div class="section-title">Test cases</div>
+        <ul class="testcases">
+                        <li class="testcase">
+                <div class="testcase-no">0</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">maze</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;.$.&quot;, &quot;A#B&quot;, &quot;A#B&quot;, &quot;.!.&quot; }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">trap</div>
+                                
+                                <div class="value data">
+                                
+                                    { 50, 50, 0, 0, 0, 0, 0 }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0.5
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">First, go left one cell, and then down one cell into the 'A'. 
+One of two things might happen with equal probability: 
+<ul>
+	<li><i>You get damaged. </i> You fail to finish the maze. </li>
+	<li><i>You do not get damaged. </i> This means all cells with color 'A' are safe, so you can continue through the 'A' zone and get to the exit. </li>
+</ul>
+The probability of reaching the exit is 0 (the first case) + 0.5 (the second case) = 0.5. <br></br>
+The probability is the same if you go through the 'B' zone.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">1</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">maze</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;.$.&quot;, &quot;A#B&quot;, &quot;A#B&quot;, &quot;.!.&quot; }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">trap</div>
+                                
+                                <div class="value data">
+                                
+                                    { 50, 40, 0, 0, 0, 0, 0 }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0.6
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">As 'B' is safer than it was in the previous example, it is better to go through the 'B' zone.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">2</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">maze</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;$A#&quot;, &quot;.#.&quot;, &quot;#B!&quot; }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">trap</div>
+                                
+                                <div class="value data">
+                                
+                                    { 10, 10, 10, 10, 10, 10, 10 }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0.0
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">No matter how you walk, you cannot reach the exit, so you should return 0.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">3</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">maze</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;$A..&quot;, &quot;##.A&quot;, &quot;..B!&quot; }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">trap</div>
+                                
+                                <div class="value data">
+                                
+                                    { 50, 50, 0, 0, 0, 0, 0 }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0.5
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">4</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">maze</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;$C..&quot;, &quot;##.A&quot;, &quot;..B!&quot; }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">trap</div>
+                                
+                                <div class="value data">
+                                
+                                    { 50, 50, 100, 0, 0, 0, 0 }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0.0
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">5</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">maze</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;.$.D.E.F.G.!.&quot; }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">trap</div>
+                                
+                                <div class="value data">
+                                
+                                    { 10, 20, 30, 40, 50, 60, 70 }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0.036000000000000004
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                    </ul>
+    </div>
+
+    <hr>
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>

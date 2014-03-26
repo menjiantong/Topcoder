@@ -1,0 +1,8 @@
+CharmingTicketsEasy (1000 Points)
+
+  Testcase #0 ... PASSED! (0.24 seconds)
+  Testcase #1 ... PASSED! (0.04 seconds)
+  Testcase #2 ... 8091
+FAILED! (0.04 seconds)
+           Expected: 1240
+           Received: 1360
