@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+
+	<style type="text/css">
+	    /* color scheme */
+	    
+            body { color: black; background-color: white; }
+            .section .section-title { color: grey; }
+            li.testcase div.testcase-no { border-color: #ddd; color: grey; }
+            li.testcase .tag { background: #545454; color: white; }
+            li.testcase .data { background: #eee; }
+        
+
+	    /* other style */
+	    body { font-family: Helvetica, Arial, Verdana, sans-serif; }
+		.heading { font-weight: bold; font-size: 28px; text-align: center; }
+		.section { padding-top: 10px; }
+	    .section .section-title { font-weight: bold; font-size: 20px; }
+        .problem-intro { padding-left: 20px; }
+        note, user-constraint { padding-left: 20px; }
+		type {
+			font-weight: bold;
+			font-family: monospace;
+		}
+		
+            img {
+                float: none;
+                display: block;
+                width: 200px;
+                height: auto;
+                margin: 10px;
+                border: 0px solid #ccc;
+            }
+        
+		ul {
+			list-style-type: none;
+			padding: 0px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		ul.constraints li:before {
+			content: "-";
+			font-size: 16px;
+			font-family: monospace;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+		ul.notes li:before {
+			content: "~";
+			font-size: 16px;
+			font-family: monospace;
+			font-weight: normal;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+
+		li.testcase {
+			display: flex;
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		li.testcase > .testcase-content > div { padding-bottom: 8px; }
+		li.testcase .tag {
+			font-family: Georgia;
+			font-size: 10px;
+			text-align: center;
+			border-radius: 5px;
+			padding: 2px;
+		}
+		li.testcase .data {
+			font-family: monospace;
+			padding: 5px;
+		}
+        li.testcase .testcase-comment {
+            margin: 0;
+            padding-left: 5px;
+        }
+        .testcase-comment p:first-child { margin-top: 0; }
+        .testcase-comment p:last-child { margin-bottom: 0; }
+
+		li.testcase {
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			overflow: auto;
+		}
+		li.testcase .testcase-no {
+		    float: left;
+		    clear: both;
+		}
+		li.testcase .testcase-content {
+		    clear: both;
+		    float: left;
+		    margin: 5px;
+		}
+		li.testcase .tag {
+		    float: left;
+		    clear: both;
+		    margin-bottom: 5px;
+		}
+
+		.testcase-content .testcase-input {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .variables {
+		    float: left;
+		}
+		.variables {
+		    margin-left: 0.5em;
+		}
+		.variable {
+		    float: left;
+		    clear: both;
+		}
+		.variable .name {
+		    clear: both;
+		    float : left;
+		    font-weight: bold;
+		}
+		.variable .name:after {
+		    font-weight: bold;
+		    content : ": ";
+		}
+		.variable .value {
+		    float: left;
+		    padding-left: 0.5em;
+		}
+		.variable .value:after {
+		    clear: both;
+		    display: block;
+		}
+		.testcase-content .testcase-output {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .data {
+		    float: left;
+		    margin-left: 0.5em;
+		}
+		.testcase-content .testcase-annotation {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .testcase-comment {
+		    float: left;
+		}
+		
+            li.testcase div.testcase-no {
+                min-width: 16px;
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                padding: 8px;
+                margin-right: 10px;
+                border-radius: 100%;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: top;
+                border-style: solid;
+                border-width: 2px;
+            }
+		
+	</style>
+
+    <title>Topcoder - SRM 159 - Problem 500</title>
+</head>
+
+<body>
+	<div class="heading">
+        SRM 159 Div 1 - Problem 500 <br/>
+        ThePriceIsRight
+    </div>
+
+	<hr/>
+
+    <!-- Problem Statemnt -->
+    <div class="section">
+        <div class="section-title">Problem Statement</div>
+        <div class="problem-intro">
+            <intro><p>The Price Is Right is a television game show. In the final round of competition, the contestant is shown the prizes which he can win. To win everything, he must make an educated guess and arrange the prizes in increasing order of price.</p>
+
+<p>Once the contestant has completed ordering prizes, the host begins to reveal the price of each prize in any order that he wishes. To make the show more interesting however, the host reveals prices in such a way that as many prices are revealed as possible before an error in the order is revealed.</p>
+
+<p>Each element in <b>prices</b> represents the price of a prize. The order of <b>prices</b> represents what the contestant thought the order was when arranging prices.</p>
+
+<p>Given a <type>int[]</type> of <b>prices</b> as ordered by the contestant, return a <type>int[]</type> with two elements. The first element should be the maximum possible number of prices revealed before the order of prices is broken, while the second element should be the total number of ways of achieving that maximum number.</p>
+<p></p>
+<p>For example, <b>prices</b> = {30, 10, 20, 40, 50}</p>
+<p>The host could reveal the following prices: 30 * * 40 50. The next price revealed (either 10 or 20) will cause an error in the ordering to be revealed. In this case, 3 prices were revealed. Alternatively, the host could reveal the following prices: * 10 20 40 50. Once again, the next price revealed will cause an error in the ordering to be revealed. However, in this case, 4 prices were revealed and thus the host would prefer to reveal the prices this way. Note that there is only 1 way of revealing 4 prices. The method should return {4,1}.</p>
+</intro>
+        </div>
+    </div>
+
+        <!-- Notes -->
+    <div class="section">
+        <div class="section-title">Notes</div>
+        <ul class="notes">
+                    <li><note>The host DOES NOT work out any intermediate deductions. He reveals prices until the sequence order is broken. See examples 5 and 6.</note></li>
+                </ul>
+    </div>
+    
+    <!-- Constraints -->
+    <div class="section">
+        <div class="section-title">Constraints</div>
+        <ul class="constraints">
+                    <li><user-constraint><b>prices</b> will have between 1 and 50 elements inclusive.</user-constraint></li>
+                    <li><user-constraint><b>prices</b> will not have any repeated elements.</user-constraint></li>
+                    <li><user-constraint>each element in <b>prices</b> will be between 1 and 1000000 inclusive.</user-constraint></li>
+                </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <div class="section-title">Test cases</div>
+        <ul class="testcases">
+                        <li class="testcase">
+                <div class="testcase-no">0</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">prices</div>
+                                
+                                <div class="value data">
+                                
+                                    { 30, 10, 20, 40, 50 }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            { 4, 1 }
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">See above.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">1</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">prices</div>
+                                
+                                <div class="value data">
+                                
+                                    { 39, 88, 67, 5, 69, 87, 82, 64, 58, 61 }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            { 4, 2 }
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">The maximum number of prices that can be revealed is 4, and there are 2 ways of achieving it. The host could either reveal 39 * 67 * 69 87 * * * * or 39 * 67 * 69 * 82 * * *. The method should return {4,2}.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">2</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">prices</div>
+                                
+                                <div class="value data">
+                                
+                                    { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            { 10, 1 }
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">3</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">prices</div>
+                                
+                                <div class="value data">
+                                
+                                    { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            { 1, 10 }
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">4</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">prices</div>
+                                
+                                <div class="value data">
+                                
+                                    { 29, 31, 73, 70, 14, 5, 6, 34, 53, 30, 15, 86 }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            { 5, 2 }
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">The host could either reveal 29 31 * * * * * 34 53 * * 86 or * * * * * 5 6 34 53 * * 86. The method should return {5,2}</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">5</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">prices</div>
+                                
+                                <div class="value data">
+                                
+                                    { 100, 99, 1, 2, 3 }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            { 3, 1 }
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">In theory, because elements in <b>prices</b> are at least 1 (due to constraints), it is enough to reveal any of 1, 2 or 3 to know that the sequence of prices is broken. However, the host DOES NOT make these intermediate deductions and will reveal * * 1 2 3.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">6</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">prices</div>
+                                
+                                <div class="value data">
+                                
+                                    { 10, 20, 11, 12 }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            { 3, 1 }
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">In theory, because there can be no price between 10 and 11, it is enough to reveal both 10 and 11 to know that the sequence of prices is broken. However, the host DOES NOT make these intermediate deductions and will reveal 10 * 11 12.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                    </ul>
+    </div>
+
+    <hr>
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>

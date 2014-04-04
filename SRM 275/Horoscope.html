@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+
+	<style type="text/css">
+	    /* color scheme */
+	    
+            body { color: black; background-color: white; }
+            .section .section-title { color: grey; }
+            li.testcase div.testcase-no { border-color: #ddd; color: grey; }
+            li.testcase .tag { background: #545454; color: white; }
+            li.testcase .data { background: #eee; }
+        
+
+	    /* other style */
+	    body { font-family: Helvetica, Arial, Verdana, sans-serif; }
+		.heading { font-weight: bold; font-size: 28px; text-align: center; }
+		.section { padding-top: 10px; }
+	    .section .section-title { font-weight: bold; font-size: 20px; }
+        .problem-intro { padding-left: 20px; }
+        note, user-constraint { padding-left: 20px; }
+		type {
+			font-weight: bold;
+			font-family: monospace;
+		}
+		
+            img {
+                float: none;
+                display: block;
+                width: 200px;
+                height: auto;
+                margin: 10px;
+                border: 0px solid #ccc;
+            }
+        
+		ul {
+			list-style-type: none;
+			padding: 0px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		ul.constraints li:before {
+			content: "-";
+			font-size: 16px;
+			font-family: monospace;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+		ul.notes li:before {
+			content: "~";
+			font-size: 16px;
+			font-family: monospace;
+			font-weight: normal;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+
+		li.testcase {
+			display: flex;
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		li.testcase > .testcase-content > div { padding-bottom: 8px; }
+		li.testcase .tag {
+			font-family: Georgia;
+			font-size: 10px;
+			text-align: center;
+			border-radius: 5px;
+			padding: 2px;
+		}
+		li.testcase .data {
+			font-family: monospace;
+			padding: 5px;
+		}
+        li.testcase .testcase-comment {
+            margin: 0;
+            padding-left: 5px;
+        }
+        .testcase-comment p:first-child { margin-top: 0; }
+        .testcase-comment p:last-child { margin-bottom: 0; }
+
+		li.testcase {
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			overflow: auto;
+		}
+		li.testcase .testcase-no {
+		    float: left;
+		    clear: both;
+		}
+		li.testcase .testcase-content {
+		    clear: both;
+		    float: left;
+		    margin: 5px;
+		}
+		li.testcase .tag {
+		    float: left;
+		    clear: both;
+		    margin-bottom: 5px;
+		}
+
+		.testcase-content .testcase-input {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .variables {
+		    float: left;
+		}
+		.variables {
+		    margin-left: 0.5em;
+		}
+		.variable {
+		    float: left;
+		    clear: both;
+		}
+		.variable .name {
+		    clear: both;
+		    float : left;
+		    font-weight: bold;
+		}
+		.variable .name:after {
+		    font-weight: bold;
+		    content : ": ";
+		}
+		.variable .value {
+		    float: left;
+		    padding-left: 0.5em;
+		}
+		.variable .value:after {
+		    clear: both;
+		    display: block;
+		}
+		.testcase-content .testcase-output {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .data {
+		    float: left;
+		    margin-left: 0.5em;
+		}
+		.testcase-content .testcase-annotation {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .testcase-comment {
+		    float: left;
+		}
+		
+            li.testcase div.testcase-no {
+                min-width: 16px;
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                padding: 8px;
+                margin-right: 10px;
+                border-radius: 100%;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: top;
+                border-style: solid;
+                border-width: 2px;
+            }
+		
+	</style>
+
+    <title>Topcoder - SRM 275 - Problem 500</title>
+</head>
+
+<body>
+	<div class="heading">
+        SRM 275 Div 1 - Problem 500 <br/>
+        Horoscope
+    </div>
+
+	<hr/>
+
+    <!-- Problem Statemnt -->
+    <div class="section">
+        <div class="section-title">Problem Statement</div>
+        <div class="problem-intro">
+            <intro>Recently, you went to a fair where one of the attractions was an oracle who would give you your horoscope for the next several days. She wasn't very precise though; all she would say is whether you would have a Good ('G') or Bad ('B') day on a particular day. Besides not being very precise, she was very inconsistent: she could be right AT MOST <b>R</b> times in a row, and she could be wrong AT MOST <b>W</b> times in a row.
+<br></br>
+<br></br>
+Create a class Horoscope, which contains a method maxGoodDays. The method takes a <type>String[]</type> <b>predictions</b>, an <type>int</type> <b>R</b> and an <type>int</type> <b>W</b> as input. The elements of <b>predictions</b> are strings containing only the characters 'G' or 'B', indicating whether your horoscope for that day was predicted to be good or bad. (Note that you should concatenate the elements of <b>predictions</b> and consider the entire string the predictions). The method should return the maximum number of Good days that you can experience given the <b>predictions</b>, and values for <b>R</b> and <b>W</b>.</intro>
+        </div>
+    </div>
+
+    
+    <!-- Constraints -->
+    <div class="section">
+        <div class="section-title">Constraints</div>
+        <ul class="constraints">
+                    <li><user-constraint><b>predictions</b> will contain between 1 and 50 elements inclusive.</user-constraint></li>
+                    <li><user-constraint>Each element of <b>predictions</b> will contain between 1 and 50 characters inclusive.</user-constraint></li>
+                    <li><user-constraint>Each element of <b>predictions</b> will contain only the characters 'G' or 'B'.</user-constraint></li>
+                    <li><user-constraint><b>R</b> will be between 1 and 50 inclusive.</user-constraint></li>
+                    <li><user-constraint><b>W</b> will be between 1 and 50 inclusive.</user-constraint></li>
+                </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <div class="section-title">Test cases</div>
+        <ul class="testcases">
+                        <li class="testcase">
+                <div class="testcase-no">0</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">predictions</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;GGGG&quot; }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">R</div>
+                                
+                                <div class="value data">
+                                
+                                    4
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">W</div>
+                                
+                                <div class="value data">
+                                
+                                    1
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            4
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">Since R is 4, the oracle can be Right for all 4 predicted days. In this case, the maximum
+number of good days you would experience is 4.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">1</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">predictions</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;GGGG&quot; }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">R</div>
+                                
+                                <div class="value data">
+                                
+                                    2
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">W</div>
+                                
+                                <div class="value data">
+                                
+                                    2
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            3
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">Here, the oracle can't be Right for all 4 days. One way of achieving 3 Good days (which is the
+maximum possible in this case) is for the oracles predictions to be Right, Wrong, Right, Right 
+for the 4 days respectively. Thus, the return value here is 3.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">2</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">predictions</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;GBGBBB&quot; }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">R</div>
+                                
+                                <div class="value data">
+                                
+                                    3
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">W</div>
+                                
+                                <div class="value data">
+                                
+                                    4
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            6
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">3</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">predictions</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;GGGBBBGBGGGB&quot;, &quot;GGBBBBBBBBBGBGBGBGBGBGBGBGBBBBBBBBBBBBBBGGGG&quot;, &quot;G&quot; }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">R</div>
+                                
+                                <div class="value data">
+                                
+                                    4
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">W</div>
+                                
+                                <div class="value data">
+                                
+                                    35
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            56
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                    </ul>
+    </div>
+
+    <hr>
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>

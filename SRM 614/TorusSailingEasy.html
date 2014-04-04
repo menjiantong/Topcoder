@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+
+	<style type="text/css">
+	    /* color scheme */
+	    
+            body { color: black; background-color: white; }
+            .section .section-title { color: grey; }
+            li.testcase div.testcase-no { border-color: #ddd; color: grey; }
+            li.testcase .tag { background: #545454; color: white; }
+            li.testcase .data { background: #eee; }
+        
+
+	    /* other style */
+	    body { font-family: Helvetica, Arial, Verdana, sans-serif; }
+		.heading { font-weight: bold; font-size: 28px; text-align: center; }
+		.section { padding-top: 10px; }
+	    .section .section-title { font-weight: bold; font-size: 20px; }
+        .problem-intro { padding-left: 20px; }
+        note, user-constraint { padding-left: 20px; }
+		type {
+			font-weight: bold;
+			font-family: monospace;
+		}
+		
+            img {
+                float: none;
+                display: block;
+                width: 200px;
+                height: auto;
+                margin: 10px;
+                border: 0px solid #ccc;
+            }
+        
+		ul {
+			list-style-type: none;
+			padding: 0px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		ul.constraints li:before {
+			content: "-";
+			font-size: 16px;
+			font-family: monospace;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+		ul.notes li:before {
+			content: "~";
+			font-size: 16px;
+			font-family: monospace;
+			font-weight: normal;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+
+		li.testcase {
+			display: flex;
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		li.testcase > .testcase-content > div { padding-bottom: 8px; }
+		li.testcase .tag {
+			font-family: Georgia;
+			font-size: 10px;
+			text-align: center;
+			border-radius: 5px;
+			padding: 2px;
+		}
+		li.testcase .data {
+			font-family: monospace;
+			padding: 5px;
+		}
+        li.testcase .testcase-comment {
+            margin: 0;
+            padding-left: 5px;
+        }
+        .testcase-comment p:first-child { margin-top: 0; }
+        .testcase-comment p:last-child { margin-bottom: 0; }
+
+		li.testcase {
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			overflow: auto;
+		}
+		li.testcase .testcase-no {
+		    float: left;
+		    clear: both;
+		}
+		li.testcase .testcase-content {
+		    clear: both;
+		    float: left;
+		    margin: 5px;
+		}
+		li.testcase .tag {
+		    float: left;
+		    clear: both;
+		    margin-bottom: 5px;
+		}
+
+		.testcase-content .testcase-input {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .variables {
+		    float: left;
+		}
+		.variables {
+		    margin-left: 0.5em;
+		}
+		.variable {
+		    float: left;
+		    clear: both;
+		}
+		.variable .name {
+		    clear: both;
+		    float : left;
+		    font-weight: bold;
+		}
+		.variable .name:after {
+		    font-weight: bold;
+		    content : ": ";
+		}
+		.variable .value {
+		    float: left;
+		    padding-left: 0.5em;
+		}
+		.variable .value:after {
+		    clear: both;
+		    display: block;
+		}
+		.testcase-content .testcase-output {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .data {
+		    float: left;
+		    margin-left: 0.5em;
+		}
+		.testcase-content .testcase-annotation {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .testcase-comment {
+		    float: left;
+		}
+		
+            li.testcase div.testcase-no {
+                min-width: 16px;
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                padding: 8px;
+                margin-right: 10px;
+                border-radius: 100%;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: top;
+                border-style: solid;
+                border-width: 2px;
+            }
+		
+	</style>
+
+    <title>Topcoder - SRM 614 - Problem 1000</title>
+</head>
+
+<body>
+	<div class="heading">
+        SRM 614 Div 2 - Problem 1000 <br/>
+        TorusSailingEasy
+    </div>
+
+	<hr/>
+
+    <!-- Problem Statemnt -->
+    <div class="section">
+        <div class="section-title">Problem Statement</div>
+        <div class="problem-intro">
+            <intro escaped="1"><p>
+Fox Ciel is sailing in the Donut sea. The Donut sea is a torus. For navigation, the torus is divided into <b>N</b> times <b>M</b> cells, as shown in the figure below.
+</p>
+<br></br>
+<p>
+<img src="http://www.topcoder.com/contest/problem/TorusSailing/torus.png"></img><br></br>
+<i>(Image by YassineMrabet from Wikimedia Commons, licensed under CC BY-SA 3.0.)</i>
+</p>
+<br></br>
+<p>
+Each of the cells has two integer coordinates (n, m), where 0 &lt;= n &lt; <b>N</b> and 0 &lt;= m &lt; <b>M</b>. Note that the coordinates wrap around modulo <b>N</b> and <b>M</b>. For example, if you are in the cell (<b>N</b>-1, <b>M</b>-1) and you cross over one of its sides, you will reach one of the cells (<b>N</b>-2, <b>M</b>-1), (0, <b>M</b>-1), (<b>N</b>-1, <b>M</b>-2), and (<b>N</b>-1, 0).
+</p>
+<br></br>
+<p>
+Ciel starts in the cell (0, 0) and wants to reach the goal cell (<b>goalX</b>, <b>goalY</b>).
+</p>
+<br></br>
+<p>
+Unfortunately, Ciel's navigation is very poor. Whenever she moves to a new cell, there are two equally probable outcomes: either both of her coordinates increase by 1, or both of them decrease by 1 (wrapping around if necessary). Formally, if Ciel's current coordinates are (n, m), her new coordinates will be either ((n+1) modulo <b>N</b>, (m+1) modulo <b>M</b>), or ((n-1) modulo <b>N</b>, (m-1) modulo <b>M</b>), with equal probability. Each such move takes one day.
+</p>
+<br></br>
+<p>
+If Ciel can never reach her goal, return -1. Otherwise, return the expected number of days Ciel will need to reach her goal.
+</p>
+</intro>
+        </div>
+    </div>
+
+        <!-- Notes -->
+    <div class="section">
+        <div class="section-title">Notes</div>
+        <ul class="notes">
+                    <li><note escaped="1">The returned value must have an absolute or relative error less than 1e-9.</note></li>
+                    <li><note escaped="1">In many programming languages the modulo operator returns negative values for negative inputs. If you are using such a language, it is safer to use the formulas ((n-1+<b>N</b>) modulo <b>N</b>) and ((m-1+<b>M</b>) modulo <b>M</b>) to compute Ciel's new coordinates when both of them are supposed to decrease.</note></li>
+                    <li><note escaped="1">Informally, the expected value of a random variable can be seen as its average over very many trials.</note></li>
+                </ul>
+    </div>
+    
+    <!-- Constraints -->
+    <div class="section">
+        <div class="section-title">Constraints</div>
+        <ul class="constraints">
+                    <li><user-constraint escaped="1"><b>N</b> will be between 2 and 10, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1"><b>M</b> will be between 2 and 10, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1"><b>goalX</b> will be between 0 and <b>N</b> - 1, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1"><b>goalY</b> will be between 0 and <b>M</b> - 1, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1">(<b>goalX</b>, <b>goalY</b>) will not be (0, 0).</user-constraint></li>
+                </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <div class="section-title">Test cases</div>
+        <ul class="testcases">
+                        <li class="testcase">
+                <div class="testcase-no">0</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">N</div>
+                                
+                                <div class="value data">
+                                
+                                    2
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">M</div>
+                                
+                                <div class="value data">
+                                
+                                    2
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">goalX</div>
+                                
+                                <div class="value data">
+                                
+                                    1
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">goalY</div>
+                                
+                                <div class="value data">
+                                
+                                    1
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            1.0
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">She will always reach the goal in 1 day.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">1</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">N</div>
+                                
+                                <div class="value data">
+                                
+                                    2
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">M</div>
+                                
+                                <div class="value data">
+                                
+                                    2
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">goalX</div>
+                                
+                                <div class="value data">
+                                
+                                    0
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">goalY</div>
+                                
+                                <div class="value data">
+                                
+                                    1
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            -1.0
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">It is impossible to reach the goal. Ciel will only visit the cells (0, 0) and (1, 1) alternately.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">2</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">N</div>
+                                
+                                <div class="value data">
+                                
+                                    3
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">M</div>
+                                
+                                <div class="value data">
+                                
+                                    3
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">goalX</div>
+                                
+                                <div class="value data">
+                                
+                                    1
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">goalY</div>
+                                
+                                <div class="value data">
+                                
+                                    1
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            2.0
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment"><p>She can reach the goal in 1 day with probability 1/2, in 2 days with probability 1/4, in 3 days with probability 1/8, in 4 days with probability 1/16 and so on. In general, she can reach the goal in n days with probability 1/(2^n) where n is a positive integer.</p>
+<p>
+The answer is (1 * 1/2) + (2 * 1/4) + (3 * 1/8) + (4 * 1/16) + ... = 2.0.
+</p></div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">3</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">N</div>
+                                
+                                <div class="value data">
+                                
+                                    4
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">M</div>
+                                
+                                <div class="value data">
+                                
+                                    6
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">goalX</div>
+                                
+                                <div class="value data">
+                                
+                                    1
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">goalY</div>
+                                
+                                <div class="value data">
+                                
+                                    3
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            27.0
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                    </ul>
+    </div>
+
+    <hr>
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+
+	<style type="text/css">
+	    /* color scheme */
+	    
+            body { color: black; background-color: white; }
+            .section .section-title { color: grey; }
+            li.testcase div.testcase-no { border-color: #ddd; color: grey; }
+            li.testcase .tag { background: #545454; color: white; }
+            li.testcase .data { background: #eee; }
+        
+
+	    /* other style */
+	    body { font-family: Helvetica, Arial, Verdana, sans-serif; }
+		.heading { font-weight: bold; font-size: 28px; text-align: center; }
+		.section { padding-top: 10px; }
+	    .section .section-title { font-weight: bold; font-size: 20px; }
+        .problem-intro { padding-left: 20px; }
+        note, user-constraint { padding-left: 20px; }
+		type {
+			font-weight: bold;
+			font-family: monospace;
+		}
+		
+            img {
+                float: none;
+                display: block;
+                width: 200px;
+                height: auto;
+                margin: 10px;
+                border: 0px solid #ccc;
+            }
+        
+		ul {
+			list-style-type: none;
+			padding: 0px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		ul.constraints li:before {
+			content: "-";
+			font-size: 16px;
+			font-family: monospace;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+		ul.notes li:before {
+			content: "~";
+			font-size: 16px;
+			font-family: monospace;
+			font-weight: normal;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+
+		li.testcase {
+			display: flex;
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		li.testcase > .testcase-content > div { padding-bottom: 8px; }
+		li.testcase .tag {
+			font-family: Georgia;
+			font-size: 10px;
+			text-align: center;
+			border-radius: 5px;
+			padding: 2px;
+		}
+		li.testcase .data {
+			font-family: monospace;
+			padding: 5px;
+		}
+        li.testcase .testcase-comment {
+            margin: 0;
+            padding-left: 5px;
+        }
+        .testcase-comment p:first-child { margin-top: 0; }
+        .testcase-comment p:last-child { margin-bottom: 0; }
+
+		li.testcase {
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			overflow: auto;
+		}
+		li.testcase .testcase-no {
+		    float: left;
+		    clear: both;
+		}
+		li.testcase .testcase-content {
+		    clear: both;
+		    float: left;
+		    margin: 5px;
+		}
+		li.testcase .tag {
+		    float: left;
+		    clear: both;
+		    margin-bottom: 5px;
+		}
+
+		.testcase-content .testcase-input {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .variables {
+		    float: left;
+		}
+		.variables {
+		    margin-left: 0.5em;
+		}
+		.variable {
+		    float: left;
+		    clear: both;
+		}
+		.variable .name {
+		    clear: both;
+		    float : left;
+		    font-weight: bold;
+		}
+		.variable .name:after {
+		    font-weight: bold;
+		    content : ": ";
+		}
+		.variable .value {
+		    float: left;
+		    padding-left: 0.5em;
+		}
+		.variable .value:after {
+		    clear: both;
+		    display: block;
+		}
+		.testcase-content .testcase-output {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .data {
+		    float: left;
+		    margin-left: 0.5em;
+		}
+		.testcase-content .testcase-annotation {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .testcase-comment {
+		    float: left;
+		}
+		
+            li.testcase div.testcase-no {
+                min-width: 16px;
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                padding: 8px;
+                margin-right: 10px;
+                border-radius: 100%;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: top;
+                border-style: solid;
+                border-width: 2px;
+            }
+		
+	</style>
+
+    <title>Topcoder - Single Round Match 614 - Problem 525</title>
+</head>
+
+<body>
+	<div class="heading">
+        Single Round Match 614 - Problem 525 <br/>
+        CycleColoring
+    </div>
+
+	<hr/>
+
+    <!-- Problem Statemnt -->
+    <div class="section">
+        <div class="section-title">Problem Statement</div>
+        <div class="problem-intro">
+            <intro escaped="1"><p><i>This problem statement contains superscripts and/or subscripts. It may not display properly outside the applet.</i></p><br></br>
+
+<p>Today, Bob is trying to count the colorings of a strange graph. It looks like a cycle of cycles.</p><br></br>
+
+<p>The graph has two types of edges -- <i>solid</i> edges and <i>dashed</i> edges.</p><br></br>
+
+<p>The edges between the vertices of the original cycles are all <i>solid</i> edges.<br></br>
+The edges that connect cycles together are all <i>dashed</i> edges.</p><br></br>
+
+<p>More precisely, the graph consists of N cycles. The cycles are labelled, in order, as C<sub>0</sub>, C<sub>1</sub>, ..., C<sub>N-1</sub>. You are given a <type>int[]</type> <b>vertexCount</b> with N elements. Cycle C<sub>i</sub> has <b>vertexCount</b>[i] vertices.  The vertices of cycle C<sub>i</sub> are labelled, in order, as v<sub>i, 0</sub>, v<sub>i, 1</sub>, ..., v<sub>i, <b>vertexCount</b>[i]-1</sub>. Note that the last vertex in this order is also connected to the first one. All of the edges that form these cycles are <i>solid</i> edges.</p><br></br>
+
+<p>You are also given two <type>int[]</type>s <b>fromVertex</b> and <b>toVertex</b>, with N elements each. These <type>int[]</type>s describe the connection between cycle C<sub>i</sub> and C<sub>i+1</sub> as follows:  The vertex in cycle C<sub>i</sub> with label v<sub>i, <b>fromVertex</b>[i]</sub> and the vertex in cycle C<sub>i+1</sub> with label v<sub>i+1, <b>toVertex</b>[i]</sub> will be connected with a <i>dashed</i> edge.</p><br></br>
+
+<p>Bob has <b>K</b> distinct colors.  He wants to know how many different ways there are to color the vertices of the graph under the following two rules:</p>
+<ul>
+  <li>Vertices connected with a <i>solid</i> edge must be colored using a different color.</li>
+  <li>Vertices connected with a <i>dashed</i> edge must be colored using the same color.</li>
+</ul>
+
+<p>Two colorings are considered different if there is a vertex v<sub>i, j</sub> which has a different color in each coloring. Let C be the number of colorings that correspond to the given rules. As C can be extremely large, you should compute and return the value (C modulo 1,000,000,007).</p></intro>
+        </div>
+    </div>
+
+        <!-- Notes -->
+    <div class="section">
+        <div class="section-title">Notes</div>
+        <ul class="notes">
+                    <li><note escaped="1">i+1 is considered modulo N - hence, references to cycle C<sub>N</sub> are referring to cycle C<sub>0</sub>.</note></li>
+                </ul>
+    </div>
+    
+    <!-- Constraints -->
+    <div class="section">
+        <div class="section-title">Constraints</div>
+        <ul class="constraints">
+                    <li><user-constraint escaped="1"><b>vertexCount</b> will contain between 1 and 50 elements, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1"><b>vertexCount</b>, <b>fromVertex</b>, and <b>toVertex</b> will all contain the same number of elements.</user-constraint></li>
+                    <li><user-constraint escaped="1">Each element of <b>vertexCount</b> will be between 3 and 1,000,000, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1">Element <b>fromVertex</b>[i] will be between 0 and <b>vertexCount</b>[i] - 1, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1">Element <b>toVertex</b>[i] will be between 0 and <b>vertexCount</b>[i+1] - 1, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1">K will be between 2 and 1,000,000,000, inclusive.</user-constraint></li>
+                </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <div class="section-title">Test cases</div>
+        <ul class="testcases">
+                        <li class="testcase">
+                <div class="testcase-no">0</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">vertexCount</div>
+                                
+                                <div class="value data">
+                                
+                                    { 3, 3 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">fromVertex</div>
+                                
+                                <div class="value data">
+                                
+                                    { 0, 0 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">toVertex</div>
+                                
+                                <div class="value data">
+                                
+                                    { 0, 0 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">K</div>
+                                
+                                <div class="value data">
+                                
+                                    3
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            12
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">This graph consists of two cycles of length 3. There are two dashed edges, each connecting vertex 0 of one cycle to vertex 0 of the other cycle. These two vertices must share the same color. We have 3 possibilities for that color. Once we fix it, we have 2 possibilities how to color the rest of each cycle. Hence, the answer is 3*2*2 = 12.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">1</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">vertexCount</div>
+                                
+                                <div class="value data">
+                                
+                                    { 6 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">fromVertex</div>
+                                
+                                <div class="value data">
+                                
+                                    { 4 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">toVertex</div>
+                                
+                                <div class="value data">
+                                
+                                    { 1 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">K</div>
+                                
+                                <div class="value data">
+                                
+                                    3
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            12
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">This graph only has one cycle. Note that for N=1 there is still one dashed edge and it connects two vertices on the same cycle. The 12 valid colorings of the resulting graph correspond to the 12 valid colorings of the graph from Example 0.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">2</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">vertexCount</div>
+                                
+                                <div class="value data">
+                                
+                                    { 3, 3 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">fromVertex</div>
+                                
+                                <div class="value data">
+                                
+                                    { 0, 1 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">toVertex</div>
+                                
+                                <div class="value data">
+                                
+                                    { 1, 2 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">K</div>
+                                
+                                <div class="value data">
+                                
+                                    3
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">Vertices 0 and 2 on cycle 0 must both have the same color as vertex 1 on cycle 1. However, vertices 0 and 2 on cycle 0 are adjacent and therefore must have different colors. This is a contradiction. Therefore, there are no valid colorings of this graph.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">3</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">vertexCount</div>
+                                
+                                <div class="value data">
+                                
+                                    { 9, 5 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">fromVertex</div>
+                                
+                                <div class="value data">
+                                
+                                    { 8, 3 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">toVertex</div>
+                                
+                                <div class="value data">
+                                
+                                    { 0, 2 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">K</div>
+                                
+                                <div class="value data">
+                                
+                                    8
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            589124602
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">4</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">vertexCount</div>
+                                
+                                <div class="value data">
+                                
+                                    { 14, 15, 16, 17 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">fromVertex</div>
+                                
+                                <div class="value data">
+                                
+                                    { 5, 10, 4, 6 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">toVertex</div>
+                                
+                                <div class="value data">
+                                
+                                    { 10, 3, 14, 10 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">K</div>
+                                
+                                <div class="value data">
+                                
+                                    614
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            818050159
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">5</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">vertexCount</div>
+                                
+                                <div class="value data">
+                                
+                                    { 482373, 283712, 883, 12834, 5, 5, 482734, 99912, 35881, 277590 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">fromVertex</div>
+                                
+                                <div class="value data">
+                                
+                                    { 59283, 49782, 0, 0, 3, 2, 84791, 40017, 2263, 461 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">toVertex</div>
+                                
+                                <div class="value data">
+                                
+                                    { 150173, 709, 11108, 0, 4, 7, 5902, 712, 190232, 390331 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">K</div>
+                                
+                                <div class="value data">
+                                
+                                    479360784
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            763634309
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                    </ul>
+    </div>
+
+    <hr>
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
