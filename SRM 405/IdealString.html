@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+
+	<style type="text/css">
+	    /* color scheme */
+	    
+            body { color: black; background-color: white; }
+            .section .section-title { color: grey; }
+            li.testcase div.testcase-no { border-color: #ddd; color: grey; }
+            li.testcase .tag { background: #545454; color: white; }
+            li.testcase .data { background: #eee; }
+        
+
+	    /* other style */
+	    body { font-family: Helvetica, Arial, Verdana, sans-serif; }
+		.heading { font-weight: bold; font-size: 28px; text-align: center; }
+		.section { padding-top: 10px; }
+	    .section .section-title { font-weight: bold; font-size: 20px; }
+        .problem-intro { padding-left: 20px; }
+        note, user-constraint { padding-left: 20px; }
+		type {
+			font-weight: bold;
+			font-family: monospace;
+		}
+		
+            img {
+                float: none;
+                display: block;
+                width: 200px;
+                height: auto;
+                margin: 10px;
+                border: 0px solid #ccc;
+            }
+        
+		ul {
+			list-style-type: none;
+			padding: 0px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		ul.constraints li:before {
+			content: "-";
+			font-size: 16px;
+			font-family: monospace;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+		ul.notes li:before {
+			content: "~";
+			font-size: 16px;
+			font-family: monospace;
+			font-weight: normal;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+
+		li.testcase {
+			display: flex;
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		li.testcase > .testcase-content > div { padding-bottom: 8px; }
+		li.testcase .tag {
+			font-family: Georgia;
+			font-size: 10px;
+			text-align: center;
+			border-radius: 5px;
+			padding: 2px;
+		}
+		li.testcase .data {
+			font-family: monospace;
+			padding: 5px;
+		}
+        li.testcase .testcase-comment {
+            margin: 0;
+            padding-left: 5px;
+        }
+        .testcase-comment p:first-child { margin-top: 0; }
+        .testcase-comment p:last-child { margin-bottom: 0; }
+
+		li.testcase {
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			overflow: auto;
+		}
+		li.testcase .testcase-no {
+		    float: left;
+		    clear: both;
+		}
+		li.testcase .testcase-content {
+		    clear: both;
+		    float: left;
+		    margin: 5px;
+		}
+		li.testcase .tag {
+		    float: left;
+		    clear: both;
+		    margin-bottom: 5px;
+		}
+
+		.testcase-content .testcase-input {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .variables {
+		    float: left;
+		}
+		.variables {
+		    margin-left: 0.5em;
+		}
+		.variable {
+		    float: left;
+		    clear: both;
+		}
+		.variable .name {
+		    clear: both;
+		    float : left;
+		    font-weight: bold;
+		}
+		.variable .name:after {
+		    font-weight: bold;
+		    content : ": ";
+		}
+		.variable .value {
+		    float: left;
+		    padding-left: 0.5em;
+		}
+		.variable .value:after {
+		    clear: both;
+		    display: block;
+		}
+		.testcase-content .testcase-output {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .data {
+		    float: left;
+		    margin-left: 0.5em;
+		}
+		.testcase-content .testcase-annotation {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .testcase-comment {
+		    float: left;
+		}
+		
+            li.testcase div.testcase-no {
+                min-width: 16px;
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                padding: 8px;
+                margin-right: 10px;
+                border-radius: 100%;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: top;
+                border-style: solid;
+                border-width: 2px;
+            }
+		
+	</style>
+
+    <title>Topcoder - SRM 405 - Problem 1000</title>
+</head>
+
+<body>
+	<div class="heading">
+        SRM 405 Div 2 - Problem 1000 <br/>
+        IdealString
+    </div>
+
+	<hr/>
+
+    <!-- Problem Statemnt -->
+    <div class="section">
+        <div class="section-title">Problem Statement</div>
+        <div class="problem-intro">
+            <intro escaped="1"><p>An <i>ideal</i> string is a string where the 1-based index of the first occurrence of each letter is equal to the number of occurrences of that letter in the string.  For example, the &quot;BAOOOA&quot; is an ideal string (quotes for clarity only).  The letter 'B' appears 1 time, and its index is 1.  The letter 'A' occurs 2 times and its first index is 2.  The letter 'O' occurs 3 times and its first index is 3.</p>
+
+<p>Given an <type>int</type> <b>length</b>, return the lexicographically smallest ideal string of that length containing only uppercase letters ('A'-'Z').  If there are no such ideal strings of that length, return an empty <type>String</type> instead.</p></intro>
+        </div>
+    </div>
+
+        <!-- Notes -->
+    <div class="section">
+        <div class="section-title">Notes</div>
+        <ul class="notes">
+                    <li><note escaped="1">String A is lexicographically smaller than string B of the same length if it contains a smaller letter  at the first position they differ. Letter X is smaller than letter Y if it comes earlier in the alphabet.</note></li>
+                </ul>
+    </div>
+    
+    <!-- Constraints -->
+    <div class="section">
+        <div class="section-title">Constraints</div>
+        <ul class="constraints">
+                    <li><user-constraint escaped="1"><b>length</b> will be between 1 and 100, inclusive.</user-constraint></li>
+                </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <div class="section-title">Test cases</div>
+        <ul class="testcases">
+                        <li class="testcase">
+                <div class="testcase-no">0</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">length</div>
+                                
+                                <div class="value data">
+                                
+                                    1
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            &quot;A&quot;
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">1</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">length</div>
+                                
+                                <div class="value data">
+                                
+                                    3
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            &quot;ABB&quot;
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">2</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">length</div>
+                                
+                                <div class="value data">
+                                
+                                    2
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            &quot;&quot;
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">There's no way we can construct an ideal string of length 2 - if both its characters are equal, then the number of occurrences (2) and the position of its first occurrence (1) do not match; if they are distinct, then for the second character the number of occurrences (1) and the position of its first occurrence (2) do not match as well.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">3</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">length</div>
+                                
+                                <div class="value data">
+                                
+                                    6
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            &quot;ABCBCC&quot;
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">We can permute the last 3 characters in any way, but this way gets us the lexicographically smallest answer.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">4</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">length</div>
+                                
+                                <div class="value data">
+                                
+                                    7
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            &quot;ABBCCCC&quot;
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">5</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">length</div>
+                                
+                                <div class="value data">
+                                
+                                    5
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            &quot;&quot;
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                    </ul>
+    </div>
+
+    <hr>
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>

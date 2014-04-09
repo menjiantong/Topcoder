@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+
+	<style type="text/css">
+	    /* color scheme */
+	    
+            body { color: black; background-color: white; }
+            .section .section-title { color: grey; }
+            li.testcase div.testcase-no { border-color: #ddd; color: grey; }
+            li.testcase .tag { background: #545454; color: white; }
+            li.testcase .data { background: #eee; }
+        
+
+	    /* other style */
+	    body { font-family: Helvetica, Arial, Verdana, sans-serif; }
+		.heading { font-weight: bold; font-size: 28px; text-align: center; }
+		.section { padding-top: 10px; }
+	    .section .section-title { font-weight: bold; font-size: 20px; }
+        .problem-intro { padding-left: 20px; }
+        note, user-constraint { padding-left: 20px; }
+		type {
+			font-weight: bold;
+			font-family: monospace;
+		}
+		
+            img {
+                float: none;
+                display: block;
+                width: 200px;
+                height: auto;
+                margin: 10px;
+                border: 0px solid #ccc;
+            }
+        
+		ul {
+			list-style-type: none;
+			padding: 0px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		ul.constraints li:before {
+			content: "-";
+			font-size: 16px;
+			font-family: monospace;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+		ul.notes li:before {
+			content: "~";
+			font-size: 16px;
+			font-family: monospace;
+			font-weight: normal;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+
+		li.testcase {
+			display: flex;
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		li.testcase > .testcase-content > div { padding-bottom: 8px; }
+		li.testcase .tag {
+			font-family: Georgia;
+			font-size: 10px;
+			text-align: center;
+			border-radius: 5px;
+			padding: 2px;
+		}
+		li.testcase .data {
+			font-family: monospace;
+			padding: 5px;
+		}
+        li.testcase .testcase-comment {
+            margin: 0;
+            padding-left: 5px;
+        }
+        .testcase-comment p:first-child { margin-top: 0; }
+        .testcase-comment p:last-child { margin-bottom: 0; }
+
+		li.testcase {
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			overflow: auto;
+		}
+		li.testcase .testcase-no {
+		    float: left;
+		    clear: both;
+		}
+		li.testcase .testcase-content {
+		    clear: both;
+		    float: left;
+		    margin: 5px;
+		}
+		li.testcase .tag {
+		    float: left;
+		    clear: both;
+		    margin-bottom: 5px;
+		}
+
+		.testcase-content .testcase-input {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .variables {
+		    float: left;
+		}
+		.variables {
+		    margin-left: 0.5em;
+		}
+		.variable {
+		    float: left;
+		    clear: both;
+		}
+		.variable .name {
+		    clear: both;
+		    float : left;
+		    font-weight: bold;
+		}
+		.variable .name:after {
+		    font-weight: bold;
+		    content : ": ";
+		}
+		.variable .value {
+		    float: left;
+		    padding-left: 0.5em;
+		}
+		.variable .value:after {
+		    clear: both;
+		    display: block;
+		}
+		.testcase-content .testcase-output {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .data {
+		    float: left;
+		    margin-left: 0.5em;
+		}
+		.testcase-content .testcase-annotation {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .testcase-comment {
+		    float: left;
+		}
+		
+            li.testcase div.testcase-no {
+                min-width: 16px;
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                padding: 8px;
+                margin-right: 10px;
+                border-radius: 100%;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: top;
+                border-style: solid;
+                border-width: 2px;
+            }
+		
+	</style>
+
+    <title>Topcoder - TCO 2013 Round 1C - Problem 250</title>
+</head>
+
+<body>
+	<div class="heading">
+        TCO 2013 Round 1C Div 1 - Problem 250 <br/>
+        TheArray
+    </div>
+
+	<hr/>
+
+    <!-- Problem Statemnt -->
+    <div class="section">
+        <div class="section-title">Problem Statement</div>
+        <div class="problem-intro">
+            <intro escaped="1">John has an array of <b>n</b> integers.
+Each pair of neighboring elements differs by at most <b>d</b>.
+The first and the last elements of the array are equal to <b>first</b> and <b>last</b>, respectively.
+<br></br><br></br>
+
+Brus does not know John's array.
+He only knows <b>n</b>, <b>d</b>, <b>first</b> and <b>last</b>.
+He wants to compute the maximal possible element John might have in his array.
+<br></br><br></br>
+
+You are given <type>int</type>s <b>n</b>, <b>d</b>, <b>first</b> and <b>last</b>.
+Return the maximal possible element the array might contain.
+</intro>
+        </div>
+    </div>
+
+        <!-- Notes -->
+    <div class="section">
+        <div class="section-title">Notes</div>
+        <ul class="notes">
+                    <li><note escaped="1">The constraints given below guarantee that there will always be at least one array that matches the values Brus knows.</note></li>
+                    <li><note escaped="1">For the constraints given below, the correct answer will always fit into an <type>int</type>.</note></li>
+                </ul>
+    </div>
+    
+    <!-- Constraints -->
+    <div class="section">
+        <div class="section-title">Constraints</div>
+        <ul class="constraints">
+                    <li><user-constraint escaped="1"><b>n</b> will be between 2 and 1,000,000, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1"><b>d</b> will be between 0 and 1000, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1"><b>first</b> will be between -1000 and 1000, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1"><b>last</b> will be between -1000 and 1000, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1">|<b>first</b> - <b>last</b>| will be at most (n-1)*d.</user-constraint></li>
+                </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <div class="section-title">Test cases</div>
+        <ul class="testcases">
+                        <li class="testcase">
+                <div class="testcase-no">0</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">n</div>
+                                
+                                <div class="value data">
+                                
+                                    3
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">d</div>
+                                
+                                <div class="value data">
+                                
+                                    5
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">first</div>
+                                
+                                <div class="value data">
+                                
+                                    2
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">last</div>
+                                
+                                <div class="value data">
+                                
+                                    4
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            7
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">Only the second element of the array is unknown.
+Its maximal valid value is 7.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">1</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">n</div>
+                                
+                                <div class="value data">
+                                
+                                    10
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">d</div>
+                                
+                                <div class="value data">
+                                
+                                    100
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">first</div>
+                                
+                                <div class="value data">
+                                
+                                    999
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">last</div>
+                                
+                                <div class="value data">
+                                
+                                    100
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            999
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">Due to the limitations, the first element is the largest element of the array.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">2</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">n</div>
+                                
+                                <div class="value data">
+                                
+                                    1000000
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">d</div>
+                                
+                                <div class="value data">
+                                
+                                    0
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">first</div>
+                                
+                                <div class="value data">
+                                
+                                    474
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">last</div>
+                                
+                                <div class="value data">
+                                
+                                    474
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            474
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">All elements of the array are equal.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">3</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">n</div>
+                                
+                                <div class="value data">
+                                
+                                    97
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">d</div>
+                                
+                                <div class="value data">
+                                
+                                    53
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">first</div>
+                                
+                                <div class="value data">
+                                
+                                    -92
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">last</div>
+                                
+                                <div class="value data">
+                                
+                                    441
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            2717
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">4</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">n</div>
+                                
+                                <div class="value data">
+                                
+                                    99
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">d</div>
+                                
+                                <div class="value data">
+                                
+                                    3
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">first</div>
+                                
+                                <div class="value data">
+                                
+                                    -743
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">last</div>
+                                
+                                <div class="value data">
+                                
+                                    -619
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            -535
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                    </ul>
+    </div>
+
+    <hr>
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
