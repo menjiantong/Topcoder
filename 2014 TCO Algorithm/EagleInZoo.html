@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+
+	<style type="text/css">
+	    /* color scheme */
+	    
+            body { color: black; background-color: white; }
+            .section .section-title { color: grey; }
+            li.testcase div.testcase-no { border-color: #ddd; color: grey; }
+            li.testcase .tag { background: #545454; color: white; }
+            li.testcase .data { background: #eee; }
+        
+
+	    /* other style */
+	    body { font-family: Helvetica, Arial, Verdana, sans-serif; }
+		.heading { font-weight: bold; font-size: 28px; text-align: center; }
+		.section { padding-top: 10px; }
+	    .section .section-title { font-weight: bold; font-size: 20px; }
+        .problem-intro { padding-left: 20px; }
+        note, user-constraint { padding-left: 20px; }
+		type {
+			font-weight: bold;
+			font-family: monospace;
+		}
+		
+            img {
+                float: none;
+                display: block;
+                width: 200px;
+                height: auto;
+                margin: 10px;
+                border: 0px solid #ccc;
+            }
+        
+		ul {
+			list-style-type: none;
+			padding: 0px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		ul.constraints li:before {
+			content: "-";
+			font-size: 16px;
+			font-family: monospace;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+		ul.notes li:before {
+			content: "~";
+			font-size: 16px;
+			font-family: monospace;
+			font-weight: normal;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+
+		li.testcase {
+			display: flex;
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		li.testcase > .testcase-content > div { padding-bottom: 8px; }
+		li.testcase .tag {
+			font-family: Georgia;
+			font-size: 10px;
+			text-align: center;
+			border-radius: 5px;
+			padding: 2px;
+		}
+		li.testcase .data {
+			font-family: monospace;
+			padding: 5px;
+		}
+        li.testcase .testcase-comment {
+            margin: 0;
+            padding-left: 5px;
+        }
+        .testcase-comment p:first-child { margin-top: 0; }
+        .testcase-comment p:last-child { margin-bottom: 0; }
+
+		li.testcase {
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			overflow: auto;
+		}
+		li.testcase .testcase-no {
+		    float: left;
+		    clear: both;
+		}
+		li.testcase .testcase-content {
+		    clear: both;
+		    float: left;
+		    margin: 5px;
+		}
+		li.testcase .tag {
+		    float: left;
+		    clear: both;
+		    margin-bottom: 5px;
+		}
+
+		.testcase-content .testcase-input {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .variables {
+		    float: left;
+		}
+		.variables {
+		    margin-left: 0.5em;
+		}
+		.variable {
+		    float: left;
+		    clear: both;
+		}
+		.variable .name {
+		    clear: both;
+		    float : left;
+		    font-weight: bold;
+		}
+		.variable .name:after {
+		    font-weight: bold;
+		    content : ": ";
+		}
+		.variable .value {
+		    float: left;
+		    padding-left: 0.5em;
+		}
+		.variable .value:after {
+		    clear: both;
+		    display: block;
+		}
+		.testcase-content .testcase-output {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .data {
+		    float: left;
+		    margin-left: 0.5em;
+		}
+		.testcase-content .testcase-annotation {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .testcase-comment {
+		    float: left;
+		}
+		
+            li.testcase div.testcase-no {
+                min-width: 16px;
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                padding: 8px;
+                margin-right: 10px;
+                border-radius: 100%;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: top;
+                border-style: solid;
+                border-width: 2px;
+            }
+		
+	</style>
+
+    <title>Topcoder - 2014 TCO Algorithm - Problem 900</title>
+</head>
+
+<body>
+	<div class="heading">
+        2014 TCO Algorithm - Problem 900 <br/>
+        EagleInZoo
+    </div>
+
+	<hr/>
+
+    <!-- Problem Statemnt -->
+    <div class="section">
+        <div class="section-title">Problem Statement</div>
+        <div class="problem-intro">
+            <intro escaped="1">John, Gogo, and Brus came to the zoo today.
+The most interesting thing in the zoo was the eagle cage.<br></br><br></br>
+
+There was a big tree in the cage.
+For the purpose of this problem, the tree is a connected graph with N vertices and N-1 edges.
+The vertices are numbered 0 through N-1, with 0 being the root of the tree.
+You are given the description of the tree in a <type>int[]</type> <b>parent</b> with N-1 elements.
+For each i between 1 and N, inclusive, the vertex number <b>parent</b>[i-1] is the parent of the vertex number i.
+The root vertex 0 has no parent.<br></br><br></br>
+
+You are also given an <type>int</type> <b>K</b>.
+There are <b>K</b> eagles in the cage.
+The eagles like to sit on vertices of the tree.
+Initially, the tree is empty.
+Then, one after another, each of the eagles makes one attempt to sit on the tree.
+When attempting to sit on the tree, each eagle follows the algorithm described below.<br></br><br></br>
+
+An eagle who tries to sit on the tree starts by flying to the root vertex.
+Then, the eagle repeats the following steps until the algorithm terminates:
+<ol>
+<li>If the eagle is at an empty vertex, the eagle sits there and the algorithm terminates.</li>
+<li>If the eagle is at a vertex where another eagle sits, and the vertex has no children, the current eagle gives up and flies away from the tree. The algorithm terminates.</li>
+<li>If the eagle is at a vertex where another eagle sits, and the vertex has one or more children, the current eagle chooses one of the children uniformly at random, and flies to that vertex.</li>
+</ol><br></br><br></br>
+
+Return the probability that the last eagle (i.e., the <b>K</b>-th eagle who attempts to sit on the tree) will actually sit on the tree.</intro>
+        </div>
+    </div>
+
+        <!-- Notes -->
+    <div class="section">
+        <div class="section-title">Notes</div>
+        <ul class="notes">
+                    <li><note escaped="1">Vertex Y is a child of vertex X if and only if vertex X is the parent of vertex Y.</note></li>
+                    <li><note escaped="1">The constraints guarantee that <b>parent</b> describes a valid tree.</note></li>
+                </ul>
+    </div>
+    
+    <!-- Constraints -->
+    <div class="section">
+        <div class="section-title">Constraints</div>
+        <ul class="constraints">
+                    <li><user-constraint escaped="1"><b>parent</b> will contain between 1 and 50 elements, inclusive.<br></br></user-constraint></li>
+                    <li><user-constraint escaped="1">For each i, element i of <b>parent</b> will be between 0 and i, inclusive.<br></br></user-constraint></li>
+                    <li><user-constraint escaped="1"><b>K</b> will be between 1 and 100, inclusive.<br></br></user-constraint></li>
+                </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <div class="section-title">Test cases</div>
+        <ul class="testcases">
+                        <li class="testcase">
+                <div class="testcase-no">0</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">parent</div>
+                                
+                                <div class="value data">
+                                
+                                    { 0, 0 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">K</div>
+                                
+                                <div class="value data">
+                                
+                                    2
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            1.0
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">The first eagle will start at the root vertex.
+It will find that the vertex is empty, and it will sit there.
+
+The second eagle will also start at the root vertex, but the vertex is already occupied.
+Vertex 0 has two children: vertices 1 and 2.
+The second eagle will pick one of them uniformly at random, fly to that vertex, and sit there.
+
+Thus, the second eagle will always sit on the tree, hence the probability we want to compute is 1.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">1</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">parent</div>
+                                
+                                <div class="value data">
+                                
+                                    { 0, 0 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">K</div>
+                                
+                                <div class="value data">
+                                
+                                    3
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0.5
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">There are four equally likely ways how the process can look like:
+<ul>
+<li>First eagle sits at 0. Second eagle flies from 0 to 1 and sits there. Third eagle flies from 0 to 1, finds it occupied and flies away from the tree.</li>
+<li>First eagle sits at 0. Second eagle flies from 0 to 1 and sits there. Third eagle flies from 0 to 2 and sits there.</li>
+<li>First eagle sits at 0. Second eagle flies from 0 to 2 and sits there. Third eagle flies from 0 to 1 and sits there.</li>
+<li>First eagle sits at 0. Second eagle flies from 0 to 2 and sits there. Third eagle flies from 0 to 2, finds it occupied and flies away from the tree.</li>
+</ul>
+Thus, the probability that the third eagle will sit on the tree is 2/4.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">2</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">parent</div>
+                                
+                                <div class="value data">
+                                
+                                    { 0, 1, 0, 3 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">K</div>
+                                
+                                <div class="value data">
+                                
+                                    4
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0.75
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">3</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">parent</div>
+                                
+                                <div class="value data">
+                                
+                                    { 0, 0, 1, 1, 2, 4, 4, 4, 5, 5, 6, 6 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">K</div>
+                                
+                                <div class="value data">
+                                
+                                    20
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0.14595168754091617
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">4</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">parent</div>
+                                
+                                <div class="value data">
+                                
+                                    { 0, 1, 2, 3, 2, 1, 1, 7, 0, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 14, 9 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">K</div>
+                                
+                                <div class="value data">
+                                
+                                    24
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0.3272154791654077
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">5</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">parent</div>
+                                
+                                <div class="value data">
+                                
+                                    { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">K</div>
+                                
+                                <div class="value data">
+                                
+                                    50
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0.0
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">For this particular tree, the 50-th eagle will certainly have no place to sit.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                    </ul>
+    </div>
+
+    <hr>
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>

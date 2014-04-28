@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+
+	<style type="text/css">
+	    /* color scheme */
+	    
+            body { color: black; background-color: white; }
+            .section .section-title { color: grey; }
+            li.testcase div.testcase-no { border-color: #ddd; color: grey; }
+            li.testcase .tag { background: #545454; color: white; }
+            li.testcase .data { background: #eee; }
+        
+
+	    /* other style */
+	    body { font-family: Helvetica, Arial, Verdana, sans-serif; }
+		.heading { font-weight: bold; font-size: 28px; text-align: center; }
+		.section { padding-top: 10px; }
+	    .section .section-title { font-weight: bold; font-size: 20px; }
+        .problem-intro { padding-left: 20px; }
+        note, user-constraint { padding-left: 20px; }
+		type {
+			font-weight: bold;
+			font-family: monospace;
+		}
+		
+            img {
+                float: none;
+                display: block;
+                width: 200px;
+                height: auto;
+                margin: 10px;
+                border: 0px solid #ccc;
+            }
+        
+		ul {
+			list-style-type: none;
+			padding: 0px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		ul.constraints li:before {
+			content: "-";
+			font-size: 16px;
+			font-family: monospace;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+		ul.notes li:before {
+			content: "~";
+			font-size: 16px;
+			font-family: monospace;
+			font-weight: normal;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+
+		li.testcase {
+			display: flex;
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		li.testcase > .testcase-content > div { padding-bottom: 8px; }
+		li.testcase .tag {
+			font-family: Georgia;
+			font-size: 10px;
+			text-align: center;
+			border-radius: 5px;
+			padding: 2px;
+		}
+		li.testcase .data {
+			font-family: monospace;
+			padding: 5px;
+		}
+        li.testcase .testcase-comment {
+            margin: 0;
+            padding-left: 5px;
+        }
+        .testcase-comment p:first-child { margin-top: 0; }
+        .testcase-comment p:last-child { margin-bottom: 0; }
+
+		li.testcase {
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			overflow: auto;
+		}
+		li.testcase .testcase-no {
+		    float: left;
+		    clear: both;
+		}
+		li.testcase .testcase-content {
+		    clear: both;
+		    float: left;
+		    margin: 5px;
+		}
+		li.testcase .tag {
+		    float: left;
+		    clear: both;
+		    margin-bottom: 5px;
+		}
+
+		.testcase-content .testcase-input {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .variables {
+		    float: left;
+		}
+		.variables {
+		    margin-left: 0.5em;
+		}
+		.variable {
+		    float: left;
+		    clear: both;
+		}
+		.variable .name {
+		    clear: both;
+		    float : left;
+		    font-weight: bold;
+		}
+		.variable .name:after {
+		    font-weight: bold;
+		    content : ": ";
+		}
+		.variable .value {
+		    float: left;
+		    padding-left: 0.5em;
+		}
+		.variable .value:after {
+		    clear: both;
+		    display: block;
+		}
+		.testcase-content .testcase-output {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .data {
+		    float: left;
+		    margin-left: 0.5em;
+		}
+		.testcase-content .testcase-annotation {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .testcase-comment {
+		    float: left;
+		}
+		
+            li.testcase div.testcase-no {
+                min-width: 16px;
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                padding: 8px;
+                margin-right: 10px;
+                border-radius: 100%;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: top;
+                border-style: solid;
+                border-width: 2px;
+            }
+		
+	</style>
+
+    <title>Topcoder - 2014 TCO Algorithm - Problem 600</title>
+</head>
+
+<body>
+	<div class="heading">
+        2014 TCO Algorithm - Problem 600 <br/>
+        WolvesAndSheep
+    </div>
+
+	<hr/>
+
+    <!-- Problem Statemnt -->
+    <div class="section">
+        <div class="section-title">Problem Statement</div>
+        <div class="problem-intro">
+            <intro escaped="1">Farmer John has a huge rectangular pasture for his sheep.
+The pasture is divided into a grid of unit square cells.
+The sheep can travel freely between the cells.
+There is a wall around the pasture, so the sheep cannot leave it.<br></br><br></br>
+One day, Farmer John found that wolves have infested the pasture through holes in the wall.
+Farmer John has fixed those holes, but the damage has been done: there are now some wolves in the pasture.
+More precisely, some cells of the pasture contain sheep, some contain wolves and some are empty.
+There are no cells that contain both sheep and wolves, and Farmer John would like to keep it that way.
+To make sure that the wolves cannot reach his sheep, Farmer John is going to build some fences.<br></br><br></br>
+Each new fence has to be placed either between two rows or between two columns of cells.
+Each fence will start at one end of the pasture and reach all the way to the other end.
+Neither sheep nor wolves can cross the fences.
+The new fences must be placed in such a way that none of the wolves will be able to reach a sheep.<br></br><br></br>
+You are given a <type>String[]</type> <b>field</b>.
+For each i and j, character j of element i of <b>field</b> represents the cell in row i, column j of the grid.
+(All indices in the previous sentence are 0-based.)
+Each character in <b>field</b> will be one of 'S' (a cell with sheep), 'W' (a cell with wolves), and '.' (an empty cell).<br></br><br></br>
+Return the smallest number of new fences needed to separate the wolves from the sheep.</intro>
+        </div>
+    </div>
+
+    
+    <!-- Constraints -->
+    <div class="section">
+        <div class="section-title">Constraints</div>
+        <ul class="constraints">
+                    <li><user-constraint escaped="1"><b>field</b> will contain between 1 and 16 elements, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1">Each element of <b>field</b> will contain between 1 and 16 characters, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1">Each element of <b>field</b> will contain the same number of characters.</user-constraint></li>
+                    <li><user-constraint escaped="1">Each character of each element of <b>field</b> will be 'S', 'W' or '.'.</user-constraint></li>
+                </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <div class="section-title">Test cases</div>
+        <ul class="testcases">
+                        <li class="testcase">
+                <div class="testcase-no">0</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">field</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;W.WSS&quot;, &quot;WW.S.&quot;, &quot;.SSS.&quot;, &quot;SSS.S&quot;, &quot;.SS.S&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            2
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">The optimal solution is to build two fences: one between rows 1 and 2, the other between columns 2 and 3.
+(All those indices are 0-based.)
+This will divide the pasture into four smaller rectangles.
+One of those rectangles (the 2 by 3 rectangle in the top left corner) will contain only wolves, the other three will contain only sheep.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">1</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">field</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;.....&quot;, &quot;.....&quot;, &quot;.....&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">There are no animals, thus we need no fences.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">2</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">field</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;.SS&quot;, &quot;...&quot;, &quot;S..&quot;, &quot;W.W&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            1
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">3</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">field</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;WWWSWWSSWWW&quot;, &quot;WWSWW.SSWWW&quot;, &quot;WS.WSWWWWS.&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            10
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">4</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">field</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;.W.S.W.W&quot;, &quot;W.W.S.W.&quot;, &quot;.S.S.W.W&quot;, &quot;S.S.S.W.&quot;, &quot;.S.W.W.S&quot;, &quot;S.S.W.W.&quot;, &quot;.W.W.W.S&quot;, &quot;W.W.S.S.&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            7
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">5</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">field</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;W.SSWWSSSW.SS&quot;, &quot;.SSSSW.SSWWWW&quot;, &quot;.WWWWS.WSSWWS&quot;, &quot;SS.WSS..W.WWS&quot;, &quot;WSSS.SSWS.W.S&quot;, &quot;WSS.WS...WWWS&quot;, &quot;S.WW.S.SWWWSW&quot;, &quot;WSSSS.SSW...S&quot;, &quot;S.WWSW.WWSWSW&quot;, &quot;.WSSS.WWSWWWS&quot;, &quot;..SSSS.WWWSSS&quot;, &quot;SSWSWWS.W.SSW&quot;, &quot;S.WSWS..WSSS.&quot;, &quot;WS....W..WSS.&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            24
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">6</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">field</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;WW..SS&quot;, &quot;WW..SS&quot;, &quot;......&quot;, &quot;......&quot;, &quot;SS..WW&quot;, &quot;SS..WW&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            2
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                    </ul>
+    </div>
+
+    <hr>
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>

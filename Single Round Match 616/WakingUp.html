@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+
+	<style type="text/css">
+	    /* color scheme */
+	    
+            body { color: black; background-color: white; }
+            .section .section-title { color: grey; }
+            li.testcase div.testcase-no { border-color: #ddd; color: grey; }
+            li.testcase .tag { background: #545454; color: white; }
+            li.testcase .data { background: #eee; }
+        
+
+	    /* other style */
+	    body { font-family: Helvetica, Arial, Verdana, sans-serif; }
+		.heading { font-weight: bold; font-size: 28px; text-align: center; }
+		.section { padding-top: 10px; }
+	    .section .section-title { font-weight: bold; font-size: 20px; }
+        .problem-intro { padding-left: 20px; }
+        note, user-constraint { padding-left: 20px; }
+		type {
+			font-weight: bold;
+			font-family: monospace;
+		}
+		
+            img {
+                float: none;
+                display: block;
+                width: 200px;
+                height: auto;
+                margin: 10px;
+                border: 0px solid #ccc;
+            }
+        
+		ul {
+			list-style-type: none;
+			padding: 0px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		ul.constraints li:before {
+			content: "-";
+			font-size: 16px;
+			font-family: monospace;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+		ul.notes li:before {
+			content: "~";
+			font-size: 16px;
+			font-family: monospace;
+			font-weight: normal;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+
+		li.testcase {
+			display: flex;
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		li.testcase > .testcase-content > div { padding-bottom: 8px; }
+		li.testcase .tag {
+			font-family: Georgia;
+			font-size: 10px;
+			text-align: center;
+			border-radius: 5px;
+			padding: 2px;
+		}
+		li.testcase .data {
+			font-family: monospace;
+			padding: 5px;
+		}
+        li.testcase .testcase-comment {
+            margin: 0;
+            padding-left: 5px;
+        }
+        .testcase-comment p:first-child { margin-top: 0; }
+        .testcase-comment p:last-child { margin-bottom: 0; }
+
+		li.testcase {
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			overflow: auto;
+		}
+		li.testcase .testcase-no {
+		    float: left;
+		    clear: both;
+		}
+		li.testcase .testcase-content {
+		    clear: both;
+		    float: left;
+		    margin: 5px;
+		}
+		li.testcase .tag {
+		    float: left;
+		    clear: both;
+		    margin-bottom: 5px;
+		}
+
+		.testcase-content .testcase-input {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .variables {
+		    float: left;
+		}
+		.variables {
+		    margin-left: 0.5em;
+		}
+		.variable {
+		    float: left;
+		    clear: both;
+		}
+		.variable .name {
+		    clear: both;
+		    float : left;
+		    font-weight: bold;
+		}
+		.variable .name:after {
+		    font-weight: bold;
+		    content : ": ";
+		}
+		.variable .value {
+		    float: left;
+		    padding-left: 0.5em;
+		}
+		.variable .value:after {
+		    clear: both;
+		    display: block;
+		}
+		.testcase-content .testcase-output {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .data {
+		    float: left;
+		    margin-left: 0.5em;
+		}
+		.testcase-content .testcase-annotation {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .testcase-comment {
+		    float: left;
+		}
+		
+            li.testcase div.testcase-no {
+                min-width: 16px;
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                padding: 8px;
+                margin-right: 10px;
+                border-radius: 100%;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: top;
+                border-style: solid;
+                border-width: 2px;
+            }
+		
+	</style>
+
+    <title>Topcoder - Single Round Match 616 - Problem 250</title>
+</head>
+
+<body>
+	<div class="heading">
+        Single Round Match 616 - Problem 250 <br/>
+        WakingUp
+    </div>
+
+	<hr/>
+
+    <!-- Problem Statemnt -->
+    <div class="section">
+        <div class="section-title">Problem Statement</div>
+        <div class="problem-intro">
+            <intro escaped="1">Alex is sleeping soundly. At any minute T, his sleepiness can be characterized by an integer. Initially, at minute 0, Alex's sleepiness is some unknown integer S.
+<br></br><br></br>
+Unfortunately, there are several repeatedly ringing alarms disturbing him.
+<br></br><br></br>
+Starting from minute 1, the following happens. First, Alex's sleepiness increases by <b>D</b>. Then some of the alarms ring, decreasing Alex's sleepiness.
+<br></br><br></br>
+Formally, alarms' characteristics are given in three <type>int[]</type>s <b>period</b>, <b>start</b> and <b>volume</b>. The i-th alarm rings at minutes <b>start</b>[i], <b>start</b>[i] + <b>period</b>[i], <b>start</b>[i] + 2 * <b>period</b>[i], etc., and each time it rings, Alex's sleepiness instantly decreases by <b>volume</b>[i]. If several alarms ring at the same minute, their effects are added up, so each of them decreases Alex's sleepiness by its volume.
+<br></br><br></br>
+While Alex's sleepiness is positive, he's still sleeping. Once it becomes less than or equal to zero, Alex immediately wakes up. Note that Alex's initial sleepiness can be non-positive. In that case he just wakes up at minute 0.
+<br></br><br></br>
+You are given the <type>int[]</type>s <b>period</b>, <b>start</b>, <b>volume</b>, and the <type>int</type> <b>D</b>. Return the largest possible value of S (Alex's initial sleepiness) such that he will wake up at some moment. If he is guaranteed to wake up for all possible values of S, return -1 instead.
+</intro>
+        </div>
+    </div>
+
+        <!-- Notes -->
+    <div class="section">
+        <div class="section-title">Notes</div>
+        <ul class="notes">
+                    <li><note escaped="1">It is possible to prove that the answer for any test case fits into a 32-bit signed integer type.</note></li>
+                </ul>
+    </div>
+    
+    <!-- Constraints -->
+    <div class="section">
+        <div class="section-title">Constraints</div>
+        <ul class="constraints">
+                    <li><user-constraint escaped="1"><b>period</b> will contain between 1 and 50 elements, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1"><b>period</b>, <b>start</b> and <b>volume</b> will contain the same number of elements.</user-constraint></li>
+                    <li><user-constraint escaped="1">Each element of <b>period</b> will be between 1 and 10, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1"><b>start</b>[i] will be between 1 and <b>period</b>[i], inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1">Each element of <b>volume</b> will be between 1 and 1000, inclusive.</user-constraint></li>
+                    <li><user-constraint escaped="1"><b>D</b> will be between 1 and 100, inclusive.</user-constraint></li>
+                </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <div class="section-title">Test cases</div>
+        <ul class="testcases">
+                        <li class="testcase">
+                <div class="testcase-no">0</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">period</div>
+                                
+                                <div class="value data">
+                                
+                                    { 2, 3 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">start</div>
+                                
+                                <div class="value data">
+                                
+                                    { 1, 2 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">volume</div>
+                                
+                                <div class="value data">
+                                
+                                    { 3, 4 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">D</div>
+                                
+                                <div class="value data">
+                                
+                                    3
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            2
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">There are two alarms. The first alarm rings every 2 minutes, starting from minute 1, and has volume 3. The second alarm rings every 3 minutes, starting from minute 2, and has volume 4.
+<br></br><br></br>
+Here is what would happen for S = 2:
+
+<ul>
+<li>At minute 0, Alex's sleepiness is 2.</li>
+<li>At minute 1, Alex's sleepiness increases to 5. Then the first alarm rings, decreasing his sleepiness to 2.</li>
+<li>At minute 2, Alex's sleepiness increases to 5. Then the second alarm rings, decreasing his sleepiness to 1.</li>
+<li>At minute 3, Alex's sleepiness increases to 4. Then the first alarm rings, decreasing his sleepiness to 1.</li>
+<li>At minute 4, Alex's sleepiness increases to 4. No alarm rings at this minute.</li>
+<li>At minute 5, Alex's sleepiness increases to 7. Then both alarms ring, decreasing his sleepiness to 0, so he wakes up.</li>
+</ul>
+
+It can be proven that for any larger S, Alex will never wake up.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">1</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">period</div>
+                                
+                                <div class="value data">
+                                
+                                    { 1 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">start</div>
+                                
+                                <div class="value data">
+                                
+                                    { 1 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">volume</div>
+                                
+                                <div class="value data">
+                                
+                                    { 17 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">D</div>
+                                
+                                <div class="value data">
+                                
+                                    17
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            0
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">For any positive S, Alex will never wake up. It's better not to fall asleep.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">2</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">period</div>
+                                
+                                <div class="value data">
+                                
+                                    { 1 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">start</div>
+                                
+                                <div class="value data">
+                                
+                                    { 1 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">volume</div>
+                                
+                                <div class="value data">
+                                
+                                    { 23 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">D</div>
+                                
+                                <div class="value data">
+                                
+                                    17
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            -1
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">Each minute Alex's sleepiness decreases by 6. That means he will wake up at some moment, regardless of the initial sleepiness.</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">3</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">period</div>
+                                
+                                <div class="value data">
+                                
+                                    { 9, 2, 5, 5, 7 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">start</div>
+                                
+                                <div class="value data">
+                                
+                                    { 6, 1, 4, 1, 6 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">volume</div>
+                                
+                                <div class="value data">
+                                
+                                    { 71, 66, 7, 34, 6 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">D</div>
+                                
+                                <div class="value data">
+                                
+                                    50
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            78
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">4</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">period</div>
+                                
+                                <div class="value data">
+                                
+                                    { 5, 6, 5, 3, 8, 3, 4 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">start</div>
+                                
+                                <div class="value data">
+                                
+                                    { 1, 1, 3, 2, 6, 3, 3 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">volume</div>
+                                
+                                <div class="value data">
+                                
+                                    { 42, 85, 10, 86, 21, 78, 38 }
+                                
+                                </div>
+                            </div>
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">D</div>
+                                
+                                <div class="value data">
+                                
+                                    88
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            -1
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                    </ul>
+    </div>
+
+    <hr>
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>

@@ -1,0 +1,30 @@
+-- Example 0
+ooxxox
+xoxoxo
+
+6
+-- Example 1
+oooxxoo
+oooxxoo
+
+0
+-- Example 2
+ox
+xo
+
+2
+-- Example 3
+ooxxooxx
+xxoxoxoo
+
+12
+-- Example 4
+oxxoxxoooxooooxxxoo
+oxooooxxxooooxoxxxo
+
+16
+-- Example 5
+xxxoxoxxooxooxoxooo
+oxxooxxooxxoxoxooxo
+
+36

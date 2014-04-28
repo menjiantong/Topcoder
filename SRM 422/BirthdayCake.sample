@@ -1,0 +1,39 @@
+-- Example 0
+4
+apple
+orange
+strawberry
+cherry
+5
+apple orange
+apple cherry
+strawberry orange
+cherry
+apple
+2
+
+3
+-- Example 1
+5
+strawberry
+orange
+apple
+lemon
+watermelon
+4
+orange
+apple
+lemon
+watermelon
+1
+
+4
+-- Example 2
+2
+apple
+orange
+1
+strawberry
+2
+
+1

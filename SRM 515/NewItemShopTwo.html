@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+
+	<style type="text/css">
+	    /* color scheme */
+	    
+            body { color: black; background-color: white; }
+            .section .section-title { color: grey; }
+            li.testcase div.testcase-no { border-color: #ddd; color: grey; }
+            li.testcase .tag { background: #545454; color: white; }
+            li.testcase .data { background: #eee; }
+        
+
+	    /* other style */
+	    body { font-family: Helvetica, Arial, Verdana, sans-serif; }
+		.heading { font-weight: bold; font-size: 28px; text-align: center; }
+		.section { padding-top: 10px; }
+	    .section .section-title { font-weight: bold; font-size: 20px; }
+        .problem-intro { padding-left: 20px; }
+        note, user-constraint { padding-left: 20px; }
+		type {
+			font-weight: bold;
+			font-family: monospace;
+		}
+		
+            img {
+                float: none;
+                display: block;
+                width: 200px;
+                height: auto;
+                margin: 10px;
+                border: 0px solid #ccc;
+            }
+        
+		ul {
+			list-style-type: none;
+			padding: 0px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		ul.constraints li:before {
+			content: "-";
+			font-size: 16px;
+			font-family: monospace;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+		ul.notes li:before {
+			content: "~";
+			font-size: 16px;
+			font-family: monospace;
+			font-weight: normal;
+			position:relative;
+			margin-left: 0px; /* optional, for multiline li element */
+			left: 10px;
+		}
+
+		li.testcase {
+			display: flex;
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		li.testcase > .testcase-content > div { padding-bottom: 8px; }
+		li.testcase .tag {
+			font-family: Georgia;
+			font-size: 10px;
+			text-align: center;
+			border-radius: 5px;
+			padding: 2px;
+		}
+		li.testcase .data {
+			font-family: monospace;
+			padding: 5px;
+		}
+        li.testcase .testcase-comment {
+            margin: 0;
+            padding-left: 5px;
+        }
+        .testcase-comment p:first-child { margin-top: 0; }
+        .testcase-comment p:last-child { margin-bottom: 0; }
+
+		li.testcase {
+			line-height: 16px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			overflow: auto;
+		}
+		li.testcase .testcase-no {
+		    float: left;
+		    clear: both;
+		}
+		li.testcase .testcase-content {
+		    clear: both;
+		    float: left;
+		    margin: 5px;
+		}
+		li.testcase .tag {
+		    float: left;
+		    clear: both;
+		    margin-bottom: 5px;
+		}
+
+		.testcase-content .testcase-input {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .variables {
+		    float: left;
+		}
+		.variables {
+		    margin-left: 0.5em;
+		}
+		.variable {
+		    float: left;
+		    clear: both;
+		}
+		.variable .name {
+		    clear: both;
+		    float : left;
+		    font-weight: bold;
+		}
+		.variable .name:after {
+		    font-weight: bold;
+		    content : ": ";
+		}
+		.variable .value {
+		    float: left;
+		    padding-left: 0.5em;
+		}
+		.variable .value:after {
+		    clear: both;
+		    display: block;
+		}
+		.testcase-content .testcase-output {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-output .data {
+		    float: left;
+		    margin-left: 0.5em;
+		}
+		.testcase-content .testcase-annotation {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .tag {
+		    clear: both;
+		    float: left;
+		}
+		.testcase-content .testcase-annotation .testcase-comment {
+		    float: left;
+		}
+		
+            li.testcase div.testcase-no {
+                min-width: 16px;
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+                line-height: 16px;
+                padding: 8px;
+                margin-right: 10px;
+                border-radius: 100%;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: top;
+                border-style: solid;
+                border-width: 2px;
+            }
+		
+	</style>
+
+    <title>Topcoder - SRM 515 - Problem 1000</title>
+</head>
+
+<body>
+	<div class="heading">
+        SRM 515 Div 2 - Problem 1000 <br/>
+        NewItemShopTwo
+    </div>
+
+	<hr/>
+
+    <!-- Problem Statemnt -->
+    <div class="section">
+        <div class="section-title">Problem Statement</div>
+        <div class="problem-intro">
+            <intro escaped="1">Lecette is going to open an item shop. 
+On the first day, she will sell only one magical sword. 
+She will keep the shop open for the whole day, from 00:00 to 23:59. 
+<br></br><br></br>
+Since the shop is new, Lecette has only two customers so far, and she has a lot of information about them.
+The information is given as <type>String[]</type> <b>customers</b> with exactly 2 elements. 
+Each element represents a single customer who may come to the shop at some point during the day. 
+It is formatted as 
+&quot;<i>T</i><sub>1</sub>,<i>C</i><sub>1</sub>,<i>P</i><sub>1</sub>
+ <i>T</i><sub>2</sub>,<i>C</i><sub>2</sub>,<i>P</i><sub>2</sub>
+ ...
+ <i>T</i><sub><i>N</i></sub>,<i>C</i><sub><i>N</i></sub>,<i>P</i><sub><i>N</i></sub>&quot;
+ (quotes for clarity), where <i>N</i> is a positive integer. 
+An occurrence of three integers <i>T</i><sub><i>j</i></sub>, <i>C</i><sub><i>j</i></sub> and <i>P</i><sub><i>j</i></sub> 
+within <b>customers</b>[<i>i</i>] means that the following event will happen with a probability of <i>P</i><sub><i>j</i></sub> percent: 
+the <i>i</i>-th customer comes to the shop at <i>T</i><sub><i>j</i></sub> o'clock 
+and offers to buy a magical sword at a price of <i>C</i><sub><i>j</i></sub> units of money. 
+The same customer never comes to the shop more than once. 
+That is, the customer does not come to the shop during the day 
+with a probability of 100 - (<i>P</i><sub>1</sub> + <i>P</i><sub>2</sub> + ... + <i>P</i><sub><i>N</i></sub>) percent. 
+The values of <i>T</i><sub><i>j</i></sub> are such that at most one customer can come to the shop during each hour of the day 
+(see the constraints for further clarification). 
+<br></br><br></br>
+When a customer comes to the shop, Lecette can choose to either accept or reject the offer. 
+Let's define <i>S</i> as the amount of money that Lecette will get for the sword (or 0 if she will not sell it). 
+Lecette will act in such a way that maximizes the expected value of <i>S</i>. Return this expected value. 
+</intro>
+        </div>
+    </div>
+
+        <!-- Notes -->
+    <div class="section">
+        <div class="section-title">Notes</div>
+        <ul class="notes">
+                    <li><note escaped="1">The returned value must have an absolute or relative error less than 1e-9. </note></li>
+                </ul>
+    </div>
+    
+    <!-- Constraints -->
+    <div class="section">
+        <div class="section-title">Constraints</div>
+        <ul class="constraints">
+                    <li><user-constraint escaped="1"><b>customers</b> will contain exactly 2 elements. </user-constraint></li>
+                    <li><user-constraint escaped="1">Each element of <b>customers</b> will contain between 5 and 50 characters, inclusive. </user-constraint></li>
+                    <li><user-constraint escaped="1">Each element of <b>customers</b> will be formatted as &quot;<i>T</i><sub>1</sub>,<i>C</i><sub>1</sub>,<i>P</i><sub>1</sub> <i>T</i><sub>2</sub>,<i>C</i><sub>2</sub>,<i>P</i><sub>2</sub> ... <i>T</i><sub><i>N</i></sub>,<i>C</i><sub><i>N</i></sub>,<i>P</i><sub><i>N</i></sub>&quot;, where Each <i>T</i><sub><i>j</i></sub>, <i>C</i><sub><i>j</i></sub> and <i>P</i><sub><i>j</i></sub> will be nonnegative integers without extra leading zeros. </user-constraint></li>
+                    <li><user-constraint escaped="1">Each <i>T</i><sub><i>j</i></sub> will be between 0 and 23, inclusive. </user-constraint></li>
+                    <li><user-constraint escaped="1">Each <i>C</i><sub><i>j</i></sub> will be between 1 and 100, inclusive. </user-constraint></li>
+                    <li><user-constraint escaped="1">Each <i>P</i><sub><i>j</i></sub> will be between 1 and 100, inclusive. </user-constraint></li>
+                    <li><user-constraint escaped="1">For each <i>t</i>, 0 &lt;= <i>t</i> &lt; 24, there will be at most one pair (<i>i</i>, <i>j</i>) such that the value of <i>T</i><sub><i>j</i></sub> in <b>customers</b>[<i>i</i>] is equal to <i>t</i>. </user-constraint></li>
+                    <li><user-constraint escaped="1">In each element of <b>customers</b>, <i>T</i><sub>1</sub> &lt; <i>T</i><sub>2</sub> &lt; ... &lt; <i>T</i><sub><i>N</i></sub> will hold. </user-constraint></li>
+                    <li><user-constraint escaped="1">In each element of <b>customers</b>, <i>P</i><sub>1</sub> + <i>P</i><sub>2</sub> + ... + <i>P</i><sub><i>N</i></sub> will not exceed 100. </user-constraint></li>
+                </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <div class="section-title">Test cases</div>
+        <ul class="testcases">
+                        <li class="testcase">
+                <div class="testcase-no">0</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">customers</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;8,1,80 16,100,11&quot;, &quot;12,10,100&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            19.0
+                        
+                        </div>
+                    </div>
+                                        <div class="testcase-annotation">
+                        
+                            <div class="tag">comment</div>
+                        
+                        <div class="testcase-comment">The optimal strategy is as follows: 
+At 08:00, Lecette should not sell the sword even if the first customer comes to the shop. 
+At 12:00, the second customer surely comes. Then, 
+<ul>
+	<li>If the first customer has come at 08:00, she should sell the sword to the second customer. </li>
+	<li>Otherwise, she should not sell the sword to the second customer. She should sell it at 16:00 if possible. </li>
+</ul>
+By this strategy, <i>S</i> will be 10 (80%) or 100 (11%) or 0 (9%).</div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">1</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">customers</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;8,1,80 16,100,11&quot;, &quot;12,10,90 13,30,5&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            19.4
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">2</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">customers</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;0,90,25 2,90,25 4,90,25 6,90,25&quot;, &quot;7,100,80&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            90.0
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">3</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">customers</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;0,90,25 2,90,25 4,90,25 6,90,25&quot;, &quot;7,100,95&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            95.0
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                        <li class="testcase">
+                <div class="testcase-no">4</div>
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        
+                            <div class="tag">input</div>
+                        
+                        <div class="variables">
+                                                    <div class="variable data">
+                                
+                                    <div class="name data">customers</div>
+                                
+                                <div class="value data">
+                                
+                                    { &quot;0,3,1 2,4,1 4,5,9 6,2,6 8,5,3 10,5,8 12,9,7 14,9,3&quot;, &quot;1,2,3 3,8,4 5,6,2 7,6,4 9,3,3 11,8,3 13,2,7 15,9,5&quot; }
+                                
+                                </div>
+                            </div>
+                                                </div>
+                    </div>
+                    <div class="testcase-output">
+                        
+                            <div class="tag">output</div>
+                        
+                        <div class="value data">
+                        
+                            3.0692999999999997
+                        
+                        </div>
+                    </div>
+                                   
+                </div>
+            </li>
+                    </ul>
+    </div>
+
+    <hr>
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
