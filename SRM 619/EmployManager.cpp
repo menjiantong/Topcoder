@@ -26,42 +26,36 @@ typedef vector<string> VS;
 
 #define fr(i,s,n)    for(int i=s;i<(n);++i)
 #define MOD 1000000007
-class LongWordsDiv1 {
+class EmployManager {
     public:
-    int count(int n) {
+    int maximumEarnings(vector<int> v, vector<string> e) {
 
-    LL fact[n+1];
-
-    fact[0]=1;
-
-    for(int i=1;i<=n;++i)
+    int ans=0;
+    int n=v.size();
+    for(int i=0;i<n;++i)
     {
-        fact[i]=(fact[i-1]*i)%MOD;
-    }
-
-    LL dp[n+1];
-
-    dp[0]=1;
-
-    for(int i=1;i<=n;++i)
-    {
-        dp[i]=dp[i-1];
-
-        for(int j=1;j<=i-2;++j)
+        for(int j=0;j<i;++j)
         {
-            int k=i-1-j;
-            dp[i]+=dp[j]*dp[k];
-            dp[i]%=MOD;
+            ans+=-e[i][j]+'0';
         }
     }
 
+    for(int i=0;i<n;++i)
+    {
+        int val=0;
+        for(int j=0;j<n;++j)
+        {
+            val+=e[i][j]-'0';
+        }
+        if(val>v[i])ans+=val-v[i];
+    }
 
-    return (dp[n]*fact[n])%MOD;
+    return ans;
     }
 };
 
 // CUT begin
-ifstream data("LongWordsDiv1.sample");
+ifstream data("EmployManager.sample");
 
 string next_line() {
     string s;
@@ -78,6 +72,17 @@ void from_stream(string &s) {
     s = next_line();
 }
 
+template <typename T> void from_stream(vector<T> &ts) {
+    int len;
+    from_stream(len);
+    ts.clear();
+    for (int i = 0; i < len; ++i) {
+        T t;
+        from_stream(t);
+        ts.push_back(t);
+    }
+}
+
 template <typename T>
 string to_string(T t) {
     stringstream s;
@@ -89,10 +94,10 @@ string to_string(string t) {
     return "\"" + t + "\"";
 }
 
-bool do_test(int n, int __expected) {
+bool do_test(vector<int> value, vector<string> earning, int __expected) {
     time_t startClock = clock();
-    LongWordsDiv1 *instance = new LongWordsDiv1();
-    int __result = instance->count(n);
+    EmployManager *instance = new EmployManager();
+    int __result = instance->maximumEarnings(value, earning);
     double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
@@ -113,8 +118,10 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     while (true) {
         if (next_line().find("--") != 0)
             break;
-        int n;
-        from_stream(n);
+        vector<int> value;
+        from_stream(value);
+        vector<string> earning;
+        from_stream(earning);
         next_line();
         int __answer;
         from_stream(__answer);
@@ -124,16 +131,16 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(n, __answer)) {
+        if ( do_test(value, earning, __answer)) {
             passed++;
         }
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1398659379;
+        int T = time(NULL) - 1399381324;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
-        cout << "Score  : " << 500 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
+        cout << "Score  : " << 950 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
     }
     return 0;
 }
@@ -151,7 +158,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (mainProcess) {
-        cout << "LongWordsDiv1 (500 Points)" << endl << endl;
+        cout << "EmployManager (950 Points)" << endl << endl;
     }
     return run_test(mainProcess, cases, argv[0]);
 }

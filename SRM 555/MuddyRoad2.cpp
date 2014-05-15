@@ -25,43 +25,48 @@ typedef pair<int,int> pp;
 typedef vector<string> VS;
 
 #define fr(i,s,n)    for(int i=s;i<(n);++i)
-#define MOD 1000000007
-class LongWordsDiv1 {
-    public:
-    int count(int n) {
+#define MOD 555555555
 
-    LL fact[n+1];
-
-    fact[0]=1;
-
-    for(int i=1;i<=n;++i)
+int n,m;
+LL dp[556][2][2][556];
+LL f(int i,int last,int slast,int cnt)
+{
+    LL& res=dp[i][last][slast][cnt];
+    if(res==-1)
     {
-        fact[i]=(fact[i-1]*i)%MOD;
-    }
-
-    LL dp[n+1];
-
-    dp[0]=1;
-
-    for(int i=1;i<=n;++i)
-    {
-        dp[i]=dp[i-1];
-
-        for(int j=1;j<=i-2;++j)
+        res=0;
+        if(i==(n-1))
         {
-            int k=i-1-j;
-            dp[i]+=dp[j]*dp[k];
-            dp[i]%=MOD;
+            if(cnt==m)
+            {
+                if((last+slast)%2==0)res=1;
+            }
+        }
+        else
+        {
+            if(cnt<m)res=f(i+1,0,last,cnt+1);
+            int tmp=(last+slast)%2;
+            res+=f(i+1,tmp,last,cnt);
+            res%=MOD;
         }
     }
+    return res;
+}
 
+class MuddyRoad2 {
+    public:
+    int theCount(int N, int M) {
 
-    return (dp[n]*fact[n])%MOD;
+    n=N;
+    m=M;
+
+    fill(dp,-1);
+    return (int)f(1,1,0,0);
     }
 };
 
 // CUT begin
-ifstream data("LongWordsDiv1.sample");
+ifstream data("MuddyRoad2.sample");
 
 string next_line() {
     string s;
@@ -89,10 +94,10 @@ string to_string(string t) {
     return "\"" + t + "\"";
 }
 
-bool do_test(int n, int __expected) {
+bool do_test(int N, int muddyCount, int __expected) {
     time_t startClock = clock();
-    LongWordsDiv1 *instance = new LongWordsDiv1();
-    int __result = instance->count(n);
+    MuddyRoad2 *instance = new MuddyRoad2();
+    int __result = instance->theCount(N, muddyCount);
     double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
@@ -113,8 +118,10 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     while (true) {
         if (next_line().find("--") != 0)
             break;
-        int n;
-        from_stream(n);
+        int N;
+        from_stream(N);
+        int muddyCount;
+        from_stream(muddyCount);
         next_line();
         int __answer;
         from_stream(__answer);
@@ -124,16 +131,16 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(n, __answer)) {
+        if ( do_test(N, muddyCount, __answer)) {
             passed++;
         }
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1398659379;
+        int T = time(NULL) - 1399617390;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
-        cout << "Score  : " << 500 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
+        cout << "Score  : " << 955 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
     }
     return 0;
 }
@@ -151,7 +158,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (mainProcess) {
-        cout << "LongWordsDiv1 (500 Points)" << endl << endl;
+        cout << "MuddyRoad2 (955 Points)" << endl << endl;
     }
     return run_test(mainProcess, cases, argv[0]);
 }

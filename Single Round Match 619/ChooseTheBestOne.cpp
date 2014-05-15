@@ -26,42 +26,46 @@ typedef vector<string> VS;
 
 #define fr(i,s,n)    for(int i=s;i<(n);++i)
 #define MOD 1000000007
-class LongWordsDiv1 {
+class ChooseTheBestOne {
     public:
-    int count(int n) {
+    int countNumber(int N) {
 
-    LL fact[n+1];
+    VI a;
 
-    fact[0]=1;
+    for(int i=0;i<N;++i)a.pb(i+1);
 
-    for(int i=1;i<=n;++i)
+    int pos=0;
+    int npos;
+
+    for(int i=1;i<N;++i)
     {
-        fact[i]=(fact[i-1]*i)%MOD;
+        VI b;
+
+        int n=a.size();
+        LL cnt=(LL)i*i*i;
+
+        cnt%=n;
+
+        pos=(pos+cnt-1)%n;
+
+        npos=a[(pos+1)%n];
+
+        for(int j=0;j<pos;++j)b.pb(a[j]);
+        for(int j=pos+1;j<a.size();++j)b.pb(a[j]);
+        a=b;
+
+        for(int j=0;j<a.size();++j)if(a[j]==npos)pos=j;
+
     }
 
-    LL dp[n+1];
+    return a[0];
 
-    dp[0]=1;
-
-    for(int i=1;i<=n;++i)
-    {
-        dp[i]=dp[i-1];
-
-        for(int j=1;j<=i-2;++j)
-        {
-            int k=i-1-j;
-            dp[i]+=dp[j]*dp[k];
-            dp[i]%=MOD;
-        }
-    }
-
-
-    return (dp[n]*fact[n])%MOD;
+        return 0;
     }
 };
 
 // CUT begin
-ifstream data("LongWordsDiv1.sample");
+ifstream data("ChooseTheBestOne.sample");
 
 string next_line() {
     string s;
@@ -89,10 +93,10 @@ string to_string(string t) {
     return "\"" + t + "\"";
 }
 
-bool do_test(int n, int __expected) {
+bool do_test(int N, int __expected) {
     time_t startClock = clock();
-    LongWordsDiv1 *instance = new LongWordsDiv1();
-    int __result = instance->count(n);
+    ChooseTheBestOne *instance = new ChooseTheBestOne();
+    int __result = instance->countNumber(N);
     double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
@@ -113,8 +117,8 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     while (true) {
         if (next_line().find("--") != 0)
             break;
-        int n;
-        from_stream(n);
+        int N;
+        from_stream(N);
         next_line();
         int __answer;
         from_stream(__answer);
@@ -124,13 +128,13 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(n, __answer)) {
+        if ( do_test(N, __answer)) {
             passed++;
         }
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1398659379;
+        int T = time(NULL) - 1399288584;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
         cout << "Score  : " << 500 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
@@ -151,7 +155,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (mainProcess) {
-        cout << "LongWordsDiv1 (500 Points)" << endl << endl;
+        cout << "ChooseTheBestOne (500 Points)" << endl << endl;
     }
     return run_test(mainProcess, cases, argv[0]);
 }

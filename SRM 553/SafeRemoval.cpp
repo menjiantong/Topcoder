@@ -26,42 +26,96 @@ typedef vector<string> VS;
 
 #define fr(i,s,n)    for(int i=s;i<(n);++i)
 #define MOD 1000000007
-class LongWordsDiv1 {
-    public:
-    int count(int n) {
 
-    LL fact[n+1];
-
-    fact[0]=1;
-
-    for(int i=1;i<=n;++i)
+int B[4][55];
+int k,n;
+VI a0,a1,a2,a3;
+int dp[51][51][51][51];
+int f(int a,int b,int c,int d)
+{
+    int& res=dp[a][b][c][d];
+    if(res==-1)
     {
-        fact[i]=(fact[i-1]*i)%MOD;
-    }
-
-    LL dp[n+1];
-
-    dp[0]=1;
-
-    for(int i=1;i<=n;++i)
-    {
-        dp[i]=dp[i-1];
-
-        for(int j=1;j<=i-2;++j)
+        int i=a+b+c+d;
+        if(i==(n-k))
         {
-            int k=i-1-j;
-            dp[i]+=dp[j]*dp[k];
-            dp[i]%=MOD;
+            res=0;
+        }
+        else
+        {
+            int sum=0;
+            sum+=B[0][a]+B[1][b]+B[2][c]+B[3][d];
+            if(sum%4==0)
+            {
+                res=-INF;
+            }
+            else
+            {
+                if(a>0)res=f(a-1,b,c,d);
+                if(b>0)res=max(res,f(a,b-1,c,d));
+                if(c>0)res=max(res,f(a,b,c-1,d));
+                if(d>0)res=max(res,f(a,b,c,d-1));
+            }
         }
     }
+    return res;
+}
+
+class SafeRemoval {
+    public:
+    int removeThem(vector<int> a, int K) {
+    k=K;
+    n=a.size();
+    a0.clear();
+    a1.clear();
+    a2.clear();
+    a3.clear();
+
+    for(int i=0;i<a.size();++i)
+    {
+        if(a[i]%4==0)a0.pb(a[i]);
+        if(a[i]%4==1)a1.pb(a[i]);
+        if(a[i]%4==2)a2.pb(a[i]);
+        if(a[i]%4==3)a3.pb(a[i]);
+    }
+
+    sort(a0.rbegin(),a0.rend());
+    sort(a1.rbegin(),a1.rend());
+    sort(a2.rbegin(),a2.rend());
+    sort(a3.rbegin(),a3.rend());
+
+    B[0][0]=a0[0];
+    for(int i=1;i<a0.size();++i)
+    {
+        B[0][i]=B[0][i-1]+a0[i];
+    }
+
+    B[1][0]=a1[0];
+    for(int i=1;i<a1.size();++i)
+    {
+        B[1][i]=B[1][i-1]+a1[i];
+    }
+
+    B[2][0]=a2[0];
+    for(int i=1;i<a2.size();++i)
+    {
+        B[2][i]=B[2][i-1]+a2[i];
+    }
+
+    B[3][0]=a3[0];
+    for(int i=1;i<a3.size();++i)
+    {
+        B[3][i]=B[3][i-1]+a3[i];
+    }
 
 
-    return (dp[n]*fact[n])%MOD;
+    fill(dp,-1);
+    return f(0,0,0,0);
     }
 };
 
 // CUT begin
-ifstream data("LongWordsDiv1.sample");
+ifstream data("SafeRemoval.sample");
 
 string next_line() {
     string s;
@@ -78,6 +132,17 @@ void from_stream(string &s) {
     s = next_line();
 }
 
+template <typename T> void from_stream(vector<T> &ts) {
+    int len;
+    from_stream(len);
+    ts.clear();
+    for (int i = 0; i < len; ++i) {
+        T t;
+        from_stream(t);
+        ts.push_back(t);
+    }
+}
+
 template <typename T>
 string to_string(T t) {
     stringstream s;
@@ -89,10 +154,10 @@ string to_string(string t) {
     return "\"" + t + "\"";
 }
 
-bool do_test(int n, int __expected) {
+bool do_test(vector<int> seq, int k, int __expected) {
     time_t startClock = clock();
-    LongWordsDiv1 *instance = new LongWordsDiv1();
-    int __result = instance->count(n);
+    SafeRemoval *instance = new SafeRemoval();
+    int __result = instance->removeThem(seq, k);
     double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
@@ -113,8 +178,10 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     while (true) {
         if (next_line().find("--") != 0)
             break;
-        int n;
-        from_stream(n);
+        vector<int> seq;
+        from_stream(seq);
+        int k;
+        from_stream(k);
         next_line();
         int __answer;
         from_stream(__answer);
@@ -124,16 +191,16 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(n, __answer)) {
+        if ( do_test(seq, k, __answer)) {
             passed++;
         }
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1398659379;
+        int T = time(NULL) - 1399613818;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
-        cout << "Score  : " << 500 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
+        cout << "Score  : " << 1000 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
     }
     return 0;
 }
@@ -151,7 +218,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (mainProcess) {
-        cout << "LongWordsDiv1 (500 Points)" << endl << endl;
+        cout << "SafeRemoval (1000 Points)" << endl << endl;
     }
     return run_test(mainProcess, cases, argv[0]);
 }

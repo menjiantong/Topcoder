@@ -10,7 +10,6 @@ using namespace std;
 #define fill(a,v)                   memset(a, v, sizeof a)
 #define sz(a)                       ((int)(a.size()))
 #define mp                          make_pair
-#define f                           first
 #define sc                          second
 #define bitcount                    __builtin_popcount
 
@@ -26,42 +25,62 @@ typedef vector<string> VS;
 
 #define fr(i,s,n)    for(int i=s;i<(n);++i)
 #define MOD 1000000007
-class LongWordsDiv1 {
-    public:
-    int count(int n) {
 
-    LL fact[n+1];
-
-    fact[0]=1;
-
-    for(int i=1;i<=n;++i)
+int a=0,b=0,c2=0,n;
+LL dp[51][51][51][4][4];
+LL f(int a1,int b1,int c1,int last,int first)
+{
+    //cout<<"here\n";
+    LL& res=dp[a1][b1][c1][last][first];
+    if(res==-1)
     {
-        fact[i]=(fact[i-1]*i)%MOD;
-    }
-
-    LL dp[n+1];
-
-    dp[0]=1;
-
-    for(int i=1;i<=n;++i)
-    {
-        dp[i]=dp[i-1];
-
-        for(int j=1;j<=i-2;++j)
+        int i=a1+b1+c1;
+        res=0;
+        if(i==0)
         {
-            int k=i-1-j;
-            dp[i]+=dp[j]*dp[k];
-            dp[i]%=MOD;
+            if(a1<a)res=f(a1+1,b1,c1,1,1);
+            if(b1<b)res+=f(a1,b1+1,c1,2,2);
+            if(c1<c2)res+=f(a1,b1,c1+1,3,3);
         }
+        else
+        if(i==n)
+        {
+            res=(last!=first);
+        }
+        else
+        {
+            if(last!=1 && a1<a)res=f(a1+1,b1,c1,1,first);
+            if(last!=2 && b1<b)res+=f(a1,b1+1,c1,2,first);
+            if(last!=3 && c1<c2)res+=f(a1,b1,c1+1,3,first);
+        }
+        res%=MOD;
+    }
+   // if(n==4)
+    //cout<<i<<" "<<last<<" "<<first<<" "<<res<<endl;
+    return res;
+}
+
+class ColorfulCupcakesDivTwo {
+    public:
+    int countArrangements(string c) {
+
+   // c="ABABABABABABABABABABABABABABABABABABABABABABABABAB";
+    n=c.length();
+    fill(dp,-1);
+    a=b=c2=0;
+    for(int i=0;i<n;++i)
+    {
+        a+=(c[i]=='A');
+        b+=(c[i]=='B');
+        c2+=(c[i]=='C');
     }
 
-
-    return (dp[n]*fact[n])%MOD;
+    return (int)f(0,0,0,0,0);
     }
 };
 
 // CUT begin
-ifstream data("LongWordsDiv1.sample");
+ifstream data("ColorfulCupcakesDivTwo.sample");
 
 string next_line() {
     string s;
@@ -89,10 +108,10 @@ string to_string(string t) {
     return "\"" + t + "\"";
 }
 
-bool do_test(int n, int __expected) {
+bool do_test(string cupcakes, int __expected) {
     time_t startClock = clock();
-    LongWordsDiv1 *instance = new LongWordsDiv1();
-    int __result = instance->count(n);
+    ColorfulCupcakesDivTwo *instance = new ColorfulCupcakesDivTwo();
+    int __result = instance->countArrangements(cupcakes);
     double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
@@ -113,8 +132,8 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     while (true) {
         if (next_line().find("--") != 0)
             break;
-        int n;
-        from_stream(n);
+        string cupcakes;
+        from_stream(cupcakes);
         next_line();
         int __answer;
         from_stream(__answer);
@@ -124,16 +143,16 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(n, __answer)) {
+        if ( do_test(cupcakes, __answer)) {
             passed++;
         }
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1398659379;
+        int T = time(NULL) - 1399611865;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
-        cout << "Score  : " << 500 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
+        cout << "Score  : " << 950 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
     }
     return 0;
 }
@@ -151,7 +170,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (mainProcess) {
-        cout << "LongWordsDiv1 (500 Points)" << endl << endl;
+        cout << "ColorfulCupcakesDivTwo (950 Points)" << endl << endl;
     }
     return run_test(mainProcess, cases, argv[0]);
 }

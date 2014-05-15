@@ -23,13 +23,83 @@ typedef vector<int> VI;
 typedef vector<VI> VVI;
 typedef pair<int,int> pp;
 typedef vector<string> VS;
- 
+
 #define fr(i,s,n)    for(int i=s;i<(n);++i)
 #define MOD 1000000007
+
+int f1(string s,string t)
+{
+    int n=s.length();
+    int dp[n+1][n+1];
+    fill(dp,0);
+
+    for(int i=0;i<=n;++i)
+    {
+        for(int j=0;j<=n;++j)
+        {
+            if(i==0)dp[i][j]=j;
+            else if(j==0)dp[i][j]=i;
+            else
+            {
+                dp[i][j]=min(1+dp[i-1][j],min(1+dp[i][j-1],dp[i-1][j-1]+(s[i-1]!=t[j-1])));
+            }
+        }
+    }
+
+   // cout<<s<<" "<<t<<" "<<dp[n][n]<<endl;
+    return dp[n][n];
+}
+
+int f2(string s,string t,int j,int d)
+{
+    int n=s.length();
+    for(int i=j+1;i<n;++i)
+    {
+        s[i]=t[i];
+    }
+    //cout<<s<<endl;
+    int m=f1(s,t);
+
+    char ch='a';
+
+    while(count(all(t),ch)>0)ch++;
+
+    for(int i=j+1;i<n;++i)
+    {
+        s[i]=ch;
+    }
+
+    int M=f1(s,t);
+    //cout<<m<<" "<<M<<endl;
+    return (d>=m && d<=M);
+}
+
 class FarStrings {
     public:
     vector<string> find(string t) {
-        return vector<string>();
+
+    int n=t.size();
+
+    vector<string>ans;
+    for(int i=1;i<=n;++i)
+    {
+        string s(n,'?');
+
+        for(int j=0;j<n;++j)
+        {
+            for(int k=0;k<26;++k)
+            {
+                s[j]=(char)(k+97);
+                if(f2(s,t,j,i)==1)
+                {
+                    break;
+                }
+            }
+        }
+        ans.pb(s);
+    }
+
+    return ans;
     }
 };
 
@@ -125,7 +195,7 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1398093836;
+        int T = time(NULL) - 1398664785;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
         cout << "Score  : " << 800 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;

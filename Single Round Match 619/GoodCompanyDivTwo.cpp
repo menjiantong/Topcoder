@@ -26,42 +26,43 @@ typedef vector<string> VS;
 
 #define fr(i,s,n)    for(int i=s;i<(n);++i)
 #define MOD 1000000007
-class LongWordsDiv1 {
+class GoodCompanyDivTwo {
     public:
-    int count(int n) {
+    int countGood(vector<int> s, vector<int> w) {
 
-    LL fact[n+1];
+    int n=s.size();
 
-    fact[0]=1;
-
-    for(int i=1;i<=n;++i)
+    int cnt=0;
+    for(int i=0;i<n;++i)
     {
-        fact[i]=(fact[i-1]*i)%MOD;
-    }
+        VI a;
+        a.pb(i);
 
-    LL dp[n+1];
-
-    dp[0]=1;
-
-    for(int i=1;i<=n;++i)
-    {
-        dp[i]=dp[i-1];
-
-        for(int j=1;j<=i-2;++j)
+        for(int j=0;j<s.size();++j)
         {
-            int k=i-1-j;
-            dp[i]+=dp[j]*dp[k];
-            dp[i]%=MOD;
+            if(s[j]==i)a.pb(j);
         }
+
+
+
+        int f=1;
+        for(int j=0;j<a.size();++j)
+        {
+            for(int k=j+1;k<a.size();++k)
+            {
+                if(w[a[j]]==w[a[k]])f=0;
+            }
+        }
+        if(f)cnt++;
     }
+    return cnt;
 
-
-    return (dp[n]*fact[n])%MOD;
+        return 0;
     }
 };
 
 // CUT begin
-ifstream data("LongWordsDiv1.sample");
+ifstream data("GoodCompanyDivTwo.sample");
 
 string next_line() {
     string s;
@@ -78,6 +79,17 @@ void from_stream(string &s) {
     s = next_line();
 }
 
+template <typename T> void from_stream(vector<T> &ts) {
+    int len;
+    from_stream(len);
+    ts.clear();
+    for (int i = 0; i < len; ++i) {
+        T t;
+        from_stream(t);
+        ts.push_back(t);
+    }
+}
+
 template <typename T>
 string to_string(T t) {
     stringstream s;
@@ -89,10 +101,10 @@ string to_string(string t) {
     return "\"" + t + "\"";
 }
 
-bool do_test(int n, int __expected) {
+bool do_test(vector<int> superior, vector<int> workType, int __expected) {
     time_t startClock = clock();
-    LongWordsDiv1 *instance = new LongWordsDiv1();
-    int __result = instance->count(n);
+    GoodCompanyDivTwo *instance = new GoodCompanyDivTwo();
+    int __result = instance->countGood(superior, workType);
     double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
@@ -113,8 +125,10 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     while (true) {
         if (next_line().find("--") != 0)
             break;
-        int n;
-        from_stream(n);
+        vector<int> superior;
+        from_stream(superior);
+        vector<int> workType;
+        from_stream(workType);
         next_line();
         int __answer;
         from_stream(__answer);
@@ -124,16 +138,16 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(n, __answer)) {
+        if ( do_test(superior, workType, __answer)) {
             passed++;
         }
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1398659379;
+        int T = time(NULL) - 1399287765;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
-        cout << "Score  : " << 500 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
+        cout << "Score  : " << 250 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
     }
     return 0;
 }
@@ -151,7 +165,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (mainProcess) {
-        cout << "LongWordsDiv1 (500 Points)" << endl << endl;
+        cout << "GoodCompanyDivTwo (250 Points)" << endl << endl;
     }
     return run_test(mainProcess, cases, argv[0]);
 }
